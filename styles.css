@@ -63,7 +63,7 @@ canvas {
     font-size: 1.0em; /* Minimalist */
     color: #00A1D6; /* Botswana blue */
     text-align: center;
-    margin-bottom: 24px; /* Increased for space below title */
+    margin-bottom: 24px; /* Space below title */
     font-weight: normal;
 }
 
@@ -207,6 +207,7 @@ button:hover {
     font-size: 1.0em;
     line-height: 1.4;
     position: relative;
+    -webkit-tap-highlight-color: transparent; /* Remove mobile tap highlight */
 }
 
 .donation-box .crypto-button:hover {
@@ -216,9 +217,8 @@ button:hover {
 
 .donation-box .crypto-button:active {
     transform: scale(0.95); /* Quick press effect */
-    background: rgba(0, 0, 0, 0.7); /* Match hover background */
     box-shadow: 0 0 20px rgba(0, 161, 214, 0.8); /* Brighter blue glow on click */
-    transition: transform 0.1s ease, background 0.1s ease, box-shadow 0.1s ease; /* Snappier active state */
+    transition: transform 0.1s ease, box-shadow 0.1s ease; /* Snappy active state, no background change */
 }
 
 .donation-box .crypto-name.paypal {
