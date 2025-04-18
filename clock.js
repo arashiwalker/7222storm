@@ -1,6 +1,9 @@
 const canvas = document.getElementById('clockCanvas');
 const ctx = canvas.getContext('2d');
 const toggleSoundBtn = document.getElementById('toggleSound');
+const mirthaTickDisplay = document.getElementById('mirtha-tick');
+const minitTickDisplay = document.getElementById('minit-tick');
+const huorTickDisplay = document.getElementById('huor-tick');
 if (!ctx) {
     console.error('Failed to get 2D context for canvas');
 }
@@ -9,7 +12,7 @@ if (!ctx) {
 let audioCtx;
 let isSoundOn = true;
 
-function playTone() {
+function playChime(note) {
     if (!isSoundOn) return;
     try {
         if (!audioCtx || audioCtx.state === 'suspended') {
@@ -18,13 +21,13 @@ function playTone() {
         const oscillator = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
         oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(369, audioCtx.currentTime);
+        oscillator.frequency.setValueAtTime(note, audioCtx.currentTime);
         gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
         oscillator.connect(gainNode);
         gainNode.connect(audioCtx.destination);
         oscillator.start();
         oscillator.stop(audioCtx.currentTime + 0.1);
-        console.log('Mirtha sound played: 369 Hz');
+        console.log(`Chime played: ${note} Hz`);
     } catch (error) {
         console.error('Audio error:', error);
     }
@@ -32,7 +35,7 @@ function playTone() {
 
 toggleSoundBtn.addEventListener('click', () => {
     isSoundOn = !isSoundOn;
-    toggleSoundBtn.textContent = `Toggle Sound (${isSoundOn ? 'On' : 'Off'})`;
+    toggleSoundBtn.textContent = isSoundOn ? '🔊 Sound: On' : '🔇 Sound: Off';
     console.log('Sound toggled:', isSoundOn);
 });
 
@@ -55,19 +58,22 @@ window.addEventListener('resize', () => {
 // Custom time system
 const totalMirthas = 22;
 const totalMinits = 50;
-const totalHours = 24;
+const totalHuors = 24;
 
 const secondsInterval = (1000 * 72) / 22;
 const minutesInterval = secondsInterval * totalMirthas;
-const hoursInterval = minutesInterval * totalMinits;
+const huorsInterval = minutesInterval * totalMinits;
 
-const startTime = new Date("2020-02-02T00:00:00").getTime();
+const startTime = new Date("2020-02-01T23:00:00").getTime();
 
 let lastMirthaTick = 0;
+let lastMinitTick = 0;
+let lastHuorTick = 0;
 
 // Glowing ring animation state
-let glowOpacity = 0;
-let glowIncreasing = true;
+let mirthaGlowOpacity = 0;
+let minitGlowOpacity = 0;
+let huorGlowOpacity = 0;
 
 function getLabel(currentTick, totalTicks) {
     return (currentTick + totalTicks - 2) % totalTicks + 1;
@@ -86,7 +92,21 @@ function drawClockFace() {
     // Glowing ring for Mirtha (outermost)
     ctx.beginPath();
     ctx.arc(centerX, centerY, clockRadius + 5, 0, 2 * Math.PI);
-    ctx.strokeStyle = `rgba(0, 255, 0, ${glowOpacity})`; // Green glow with varying opacity
+    ctx.strokeStyle = `rgba(0, 255, 0, ${mirthaGlowOpacity})`; // Green glow
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Glowing ring for Minit
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, (clockRadius * 2) / 3 + 5, 0, 2 * Math.PI);
+    ctx.strokeStyle = `rgba(128, 0, 128, ${minitGlowOpacity})`; // Purple glow
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Glowing ring for Huor
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, clockRadius / 3 + 5, 0, 2 * Math.PI);
+    ctx.strokeStyle = `rgba(255, 0, 0, ${huorGlowOpacity})`; // Red glow
     ctx.lineWidth = 3;
     ctx.stroke();
 
@@ -104,7 +124,7 @@ function drawClockFace() {
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Hour Circle
+    // Huor Circle
     ctx.beginPath();
     ctx.arc(centerX, centerY, clockRadius / 3, 0, 2 * Math.PI);
     ctx.strokeStyle = '#FF0000';
@@ -144,8 +164,8 @@ function drawTicks() {
         ctx.stroke();
     }
 
-    for (let i = 0; i < totalHours; i++) {
-        const angle = ((i + 1) * 2 * Math.PI) / totalHours - Math.PI / 2;
+    for (let i = 0; i < totalHuors; i++) {
+        const angle = ((i + 1) * 2 * Math.PI) / totalHuors - Math.PI / 2;
         const tickXStart = centerX + (clockRadius / 3) * Math.cos(angle);
         const tickYStart = centerY + (clockRadius / 3) * Math.sin(angle);
         const tickXEnd = centerX + (clockRadius / 3 - 8) * Math.cos(angle);
@@ -184,6 +204,15 @@ function drawLabel(label, x, y, color) {
     ctx.fillText(label, x, y);
 }
 
+function updateIntervalTicks(huorTick, minitTick, mirthaTick) {
+    const huorDisplay = getLabel(huorTick, totalHuors).toString().padStart(2, '0');
+    const minitDisplay = getLabel(minitTick, totalMinits).toString().padStart(2, '0');
+    const mirthaDisplay = getLabel(mirthaTick, totalMirthas).toString().padStart(2, '0');
+    huorTickDisplay.textContent = huorDisplay;
+    minitTickDisplay.textContent = minitDisplay;
+    mirthaTickDisplay.textContent = mirthaDisplay;
+}
+
 function drawClockHands() {
     console.log('Drawing clock hands');
     const now = Date.now();
@@ -191,37 +220,66 @@ function drawClockHands() {
 
     const mirthaTick = Math.floor(elapsedTime / secondsInterval) % totalMirthas + 1;
     const minitTick = Math.floor(elapsedTime / minutesInterval) % totalMinits + 1;
-    const hourTick = Math.floor(elapsedTime / hoursInterval) % totalHours + 1;
+    const huorTick = Math.floor(elapsedTime / huorsInterval) % totalHuors + 1;
 
-    // Update glowing ring opacity (sync with Mirtha tick at 0.305555 Hz)
+    // Update Mirtha glow and chime
     if (mirthaTick !== lastMirthaTick) {
-        playTone();
+        playChime(369); // D♭4
         lastMirthaTick = mirthaTick;
-        glowOpacity = 1; // Start glow at max on new Mirtha tick
-        glowIncreasing = false;
+        mirthaGlowOpacity = 1; // Start glow at max
         console.log('Mirtha tick:', mirthaTick);
     } else {
         // Fade glow over the Mirtha interval (~3272.727 ms)
         const glowStep = (elapsedTime % secondsInterval) / secondsInterval;
-        glowOpacity = 1 - glowStep; // Linear fade from 1 to 0
+        mirthaGlowOpacity = 1 - glowStep; // Linear fade from 1 to 0
+    }
+
+    // Update Minit glow and chime
+    if (minitTick !== lastMinitTick) {
+        playChime(465.12); // F4
+        lastMinitTick = minitTick;
+        minitGlowOpacity = 1; // Start glow at max
+        console.log('Minit tick:', minitTick);
+    } else {
+        // Fade glow over the Mirtha interval (~3272.727 ms) to match Mirtha
+        minitGlowOpacity = Math.max(0, minitGlowOpacity - (1 / (secondsInterval / 16.666))); // Fade over ~3.273s
+    }
+
+    // Update Huor glow and chime
+    if (huorTick !== lastHuorTick) {
+        playChime(586.02); // A♭4
+        lastHuorTick = huorTick;
+        huorGlowOpacity = 1; // Start glow at max
+        console.log('Huor tick:', huorTick);
+    } else {
+        // Fade glow over the Mirtha interval (~3272.727 ms) to match Mirtha
+        huorGlowOpacity = Math.max(0, huorGlowOpacity - (1 / (secondsInterval / 16.666))); // Fade over ~3.273s
+    }
+
+    // Play harmony when all intervals align
+    if (mirthaTick === 1 && minitTick === 1 && huorTick === 1) {
+        playChime(369); // D♭4
+        playChime(465.12); // F4
+        playChime(586.02); // A♭4
+        console.log('Harmony chord played');
     }
 
     const mirthaFraction = (elapsedTime % secondsInterval) / secondsInterval;
     const minitFraction = (elapsedTime % minutesInterval) / minutesInterval;
-    const hourFraction = (elapsedTime % hoursInterval) / hoursInterval;
+    const huorFraction = (elapsedTime % huorsInterval) / huorsInterval;
 
     const mirthaRotation = ((mirthaTick - 1 + mirthaFraction) / totalMirthas) * 360;
     const minitRotation = ((minitTick - 1 + minitFraction) / totalMinits) * 360;
-    const hourRotation = ((hourTick - 1 + hourFraction) / totalHours) * 360;
+    const huorRotation = ((huorTick - 1 + huorFraction) / totalHuors) * 360;
 
-    const hour = drawHand(hourRotation, clockRadius / 3, '#FF0000', 3);
+    const huor = drawHand(huorRotation, clockRadius / 3, '#FF0000', 3);
     const minit = drawHand(minitRotation, (clockRadius * 2) / 3, '#800080', 3);
     const mirtha = drawHand(mirthaRotation, clockRadius, '#00FF00', 3);
 
-    const hourLabel = getLabel(hourTick, totalHours);
-    const hourTextX = hour.xEnd + 15 * Math.cos((hourRotation - 90) * (Math.PI / 180));
-    const hourTextY = hour.yEnd + 15 * Math.sin((hourRotation - 90) * (Math.PI / 180));
-    drawLabel(hourLabel, hourTextX, hourTextY, '#FF0000');
+    const huorLabel = getLabel(huorTick, totalHuors);
+    const huorTextX = huor.xEnd + 15 * Math.cos((huorRotation - 90) * (Math.PI / 180));
+    const huorTextY = huor.yEnd + 15 * Math.sin((huorRotation - 90) * (Math.PI / 180));
+    drawLabel(huorLabel, huorTextX, huorTextY, '#FF0000');
 
     const minitLabel = getLabel(minitTick, totalMinits);
     const minitTextX = minit.xEnd + 15 * Math.cos((minitRotation - 90) * (Math.PI / 180));
@@ -232,6 +290,9 @@ function drawClockHands() {
     const mirthaTextX = mirtha.xEnd + 15 * Math.cos((mirthaRotation - 90) * (Math.PI / 180));
     const mirthaTextY = mirtha.yEnd + 15 * Math.sin((mirthaRotation - 90) * (Math.PI / 180));
     drawLabel(mirthaLabel, mirthaTextX, mirthaTextY, '#00FF00');
+
+    // Update interval ticks
+    updateIntervalTicks(huorTick, minitTick, mirthaTick);
 }
 
 function drawClock() {
