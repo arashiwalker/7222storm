@@ -39,6 +39,18 @@ toggleSoundBtn.addEventListener('click', () => {
     console.log('Sound toggled:', isSoundOn);
 });
 
+// Copy-to-clipboard for donation addresses
+document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const addressId = btn.getAttribute('data-address');
+        const address = document.getElementById(addressId).textContent;
+        navigator.clipboard.writeText(address).then(() => {
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 2000);
+        });
+    });
+});
+
 // Canvas size and responsiveness
 let clockRadius, centerX, centerY;
 function resizeCanvas() {

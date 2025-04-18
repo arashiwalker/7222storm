@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7222 Clock</title>
+    <title>72/22 Clock</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -25,11 +25,58 @@
                 </div>
                 <div class="button-container">
                     <button id="toggleSound">🔊 Sound: On</button>
-                    </div>
+                </div>
+                <div class="donation-box">
+                    <p class="donation-title">Support the 72/22 Clock</p>
+                    <ul>
+                        <li>
+                            <button class="crypto-button" onclick="copyAddress(this, 'bc1qwse0y2tw9660m9c5zss7te2r9h2fjjdvvjkk0p')">
+                                <img src="images/btc-logo.png.png" alt="Bitcoin" class="crypto-icon">
+                                <strong class="crypto-name bitcoin">Bitcoin</strong>
+                                <span class="crypto-address">bc1qwse0y2tw9660m9c5zss7te2r9h2fjjdvvjkk0p</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="crypto-button" onclick="copyAddress(this, 'F2KVfuETeNo6grEJC3ULs1n7c8xWswCx5hKWTKxYGE8J')">
+                                <img src="images/sol-logo.png.png" alt="Solana" class="crypto-icon">
+                                <strong class="crypto-name solana">Solana</strong>
+                                <span class="crypto-address">F2KVfuETeNo6grEJC3ULs1n7c8xWswCx5hKWTKxYGE8J</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="crypto-button" onclick="copyAddress(this, '0x579ac14f8F6BCBc34B52c01e3b834a52dEfb61AD')">
+                                <img src="images/eth-logo.png.png" alt="Ethereum" class="crypto-icon">
+                                <strong class="crypto-name ethereum">Ethereum</strong>
+                                <span class="crypto-address">0x579ac14f8F6BCBc34B52c01e3b834a52dEfb61AD</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="crypto-button" onclick="openPayPalLink('https://www.paypal.me/YOUR_PAYPAL_ID')">
+                                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" class="crypto-icon">
+                                <strong class="crypto-name paypal">PayPal</strong>
+                                <span class="crypto-address">Donate via PayPal</span>
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
     <script src="clock.js"></script>
+    <script>
+        function copyAddress(element, address) {
+            navigator.clipboard.writeText(address).then(() => {
+                const tooltip = document.createElement('span');
+                tooltip.textContent = 'Copied!';
+                tooltip.className = 'copy-tooltip';
+                element.appendChild(tooltip);
+                setTimeout(() => tooltip.remove(), 1000);
+            }).catch(err => console.error('Copy failed:', err));
+        }
+
+        function openPayPalLink(url) {
+            window.open(url, '_blank');
+        }
+    </script>
 </body>
 </html>
