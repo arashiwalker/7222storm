@@ -1,14 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Canvas Analog Clock</title>
-  <link rel="stylesheet" href="styles.css">
-</head>S
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7222 Clock</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-  <canvas id="clockCanvas"></canvas>
-  <button id="toggleSound">Toggle Sound (On)</button>
-  <script src="clock.js"></script>
+    <div class="container">
+        <div class="main-content">
+            <div class="clock-section">
+                <div class="clock-container">
+                    <canvas id="clockCanvas"></canvas>
+                </div>
+            </div>
+            <div class="info-section">
+                <div class="interval-description">
+                    <h2>72/22 Clock</h2>
+                    <ul>
+                        <li><strong class="mirtha">Mirtha</strong> 1 Mirtha = 72/22 seconds</li>
+                        <li><strong class="minit">Minit</strong> 1 Minit = 22 Mirthas</li>
+                        <li><strong class="hour">Hour</strong> 1 Hour = 50 Minits</li>
+                        <li><strong class="day">Day</strong> 1 Day = 24 Hours</li>
+                    </ul>
+                </div>
+                <div class="button-container">
+                    <button id="toggleSound">Toggle Sound (On)</button>
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                        <input type="hidden" name="cmd" value="_s-xclick">
+                        <input type="hidden" name="hosted_button_id" value="YOUR_PAYPAL_BUTTON_ID">
+                        <button type="submit">Buy for $2</button>
+                    </form>
+                    <a href="Mirtha.zip" download>Download Free</a>
+                </div>
+                <div class="donate-section">
+                    <div class="qr-code">
+                        <img src="https://i.imgur.com/2GyT5qM.png" alt="Bitcoin Donation QR Code">
+                        <p>Bitcoin (BTC)</p>
+                    </div>
+                    <div class="qr-code">
+                        <img src="https://i.imgur.com/eth-placeholder.png" alt="Ethereum Donation QR Code">
+                        <p>Ethereum (ETH)</p>
+                    </div>
+                    <div class="qr-code">
+                        <img src="https://i.imgur.com/sol-placeholder.png" alt="Solana Donation QR Code">
+                        <p>Solana (SOL)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="clock.js"></script>
 </body>
 </html>
+<!-- Replace the placeholder Imgur URLs for ETH and SOL with the actual URLs after uploading:
+     - eth-qr.png: https://i.imgur.com/eth-placeholder.png
+     - sol-qr.png: https://i.imgur.com/sol-placeholder.png
+     After replacing, save this file and double-click to open in your default browser. -->

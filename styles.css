@@ -1,34 +1,167 @@
 /* General page styling */
 body, html {
-    height: 100%;
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #181818;
+    padding: 20px;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, #181818;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow-x: hidden;
 }
 
-/* Canvas styling */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Two-column layout */
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.clock-section, .info-section {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Clock styling */
+.clock-container {
+    margin: 20px 0;
+}
+
 canvas {
-    border: 5px solid white;
+    border: 5px solid #00A1D6; /* Botswana blue */
     border-radius: 50%;
     background-color: #282828;
-    max-width: 90vw;
-    max-height: 90vh;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0 0 20px rgba(0, 161, 214, 0.5); /* Glowing effect */
+}
+
+/* Interval description styling */
+.interval-description {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 25px;
+    border-radius: 10px;
+    text-align: left;
+    max-width: 320px;
+    margin: 20px auto;
+    box-shadow: 0 0 15px rgba(0, 161, 214, 0.3);
+    border: 1px solid rgba(0, 161, 214, 0.5);
+}
+
+.interval-description h2 {
+    font-size: 1.6em;
+    margin-bottom: 15px;
+    color: #00A1D6;
+    text-align: center;
+    font-weight: bold;
+}
+
+.interval-description ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.interval-description li {
+    margin-bottom: 12px;
+    font-size: 1.1em;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+}
+
+.interval-description strong {
+    color: #00A1D6;
+    min-width: 80px;
+    font-weight: bold;
+}
+
+.interval-description strong.mirtha {
+    color: #00FF00; /* Green to match mirtha hand */
+}
+
+.interval-description strong.minit {
+    color: #800080; /* Purple to match minit hand */
+}
+
+.interval-description strong.hour {
+    color: #FF0000; /* Red to match hour hand */
+}
+
+.interval-description strong.day {
+    color: #00A1D6; /* Blue for day */
 }
 
 /* Button styling */
-button {
-    margin-top: 10px;
-    padding: 6px 12px;
-    font-size: 0.9em;
-    background: #333;
-    border: 1px solid #fff;
-    border-radius: 4px;
+button, a {
+    margin: 5px 0;
+    padding: 12px 24px;
+    font-size: 1em;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 161, 214, 0.5);
+    border-radius: 10px;
     color: #fff;
     cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 0 10px rgba(0, 161, 214, 0.3);
+    transition: box-shadow 0.3s, background 0.3s;
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    font-weight: bold;
 }
 
-button:hover {
-    background: #444;
+button:hover, a:hover {
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 15px rgba(0, 161, 214, 0.5);
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+    align-items: center;
+}
+
+/* Donation section */
+.donate-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.qr-code {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 161, 214, 0.5);
+    box-shadow: 0 0 10px rgba(0, 161, 214, 0.3);
+    text-align: center;
+    max-width: 320px;
+}
+
+.qr-code img {
+    width: 200px;
+    height: 200px;
+}
+
+.qr-code p {
+    margin: 10px 0 0;
+    font-size: 1em;
+    color: #00A1D6;
+    font-weight: bold;
 }
