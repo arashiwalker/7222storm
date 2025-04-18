@@ -146,7 +146,7 @@ button {
     color: #00A1D6;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 161, 214, 0.3);
-    transition: box-shadow 0.3s, background 0.3s;
+    transition: box-shadow 0.3s ease, background 0.3s ease;
     display: block;
     width: 100%;
     max-width: 320px;
@@ -177,7 +177,7 @@ button:hover {
     font-size: 1.0em;
     color: #00A1D6; /* Botswana blue */
     text-align: center;
-    margin-bottom: 24px; /* Increased for space below title */
+    margin-bottom: 32px; /* Increased to lift title higher */
     font-weight: normal;
 }
 
@@ -211,11 +211,14 @@ button:hover {
 
 .donation-box .crypto-button:hover {
     background: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 0 15px rgba(0, 161, 214, 0.5); /* Unified Botswana blue glow */
+    box-shadow: 0 0 15px rgba(0, 161, 214, 0.5); /* Blue glow on hover */
 }
 
 .donation-box .crypto-button:active {
-    transform: scale(0.95); /* Push animation */
+    transform: scale(0.95); /* Quick press effect */
+    background: rgba(0, 0, 0, 0.7); /* Match hover background */
+    box-shadow: 0 0 20px rgba(0, 161, 214, 0.8); /* Brighter blue glow on click */
+    transition: transform 0.1s ease, background 0.1s ease, box-shadow 0.1s ease; /* Snappier active state */
 }
 
 .donation-box .crypto-name.paypal {
