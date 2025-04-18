@@ -48,30 +48,23 @@ canvas {
 
 /* Interval description styling */
 .interval-description {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 25px;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark */
+    padding: 20px;
     border-radius: 10px;
     text-align: left;
     max-width: 320px;
     margin: 20px auto;
-    box-shadow: 0 0 15px rgba(0, 161, 214, 0.3);
-    border: 1px solid rgba(0, 161, 214, 0.5);
-}
-
-.interval-description h2 {
-    font-size: 1.6em;
-    margin-bottom: 10px;
-    color: #00A1D6;
-    text-align: center;
-    font-weight: bold;
+    border: 1px solid #00A1D6; /* Botswana blue */
+    font-family: Arial, sans-serif; /* Original font */
+    box-shadow: 0 0 10px rgba(0, 161, 214, 0.2); /* Subtle glow */
 }
 
 .interval-description .mirtha-intro {
-    font-size: 1.2em;
-    color: #00A1D6;
+    font-size: 1.0em; /* Minimalist */
+    color: #00A1D6; /* Botswana blue */
     text-align: center;
-    margin-bottom: 15px;
-    font-weight: bold;
+    margin-bottom: 24px; /* Increased for space below title */
+    font-weight: normal;
 }
 
 .interval-description ul {
@@ -82,53 +75,56 @@ canvas {
 
 .interval-description li {
     display: grid;
-    grid-template-columns: 50px 80px 1fr;
+    grid-template-columns: 50px 80px 1fr; /* Original grid */
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     font-size: 1.0em;
     line-height: 1.4;
 }
 
 .interval-description .tick {
-    font-family: monospace;
-    font-size: 1.2em;
+    font-family: Arial, sans-serif; /* Original font */
+    font-size: 1.0em;
     font-weight: bold;
     text-align: right;
+    color: #d0d0ff; /* Soft white for glow */
 }
 
 .interval-description .tick.mirtha {
-    color: #00FF00; /* Green to match mirtha hand */
+    color: #00FF00; /* Green Mirtha */
 }
 
 .interval-description .tick.minit {
-    color: #800080; /* Purple to match minit hand */
+    color: #800080; /* Purple Minit */
 }
 
 .interval-description .tick.huor {
-    color: #FF0000; /* Red to match huor hand */
+    color: #FF0000; /* Red Huor */
 }
 
 .interval-description strong {
-    color: #00A1D6;
+    font-size: 1.0em;
     font-weight: bold;
 }
 
 .interval-description strong.mirtha {
-    color: #00FF00; /* Green to match mirtha hand */
+    color: #00FF00; /* Green Mirtha */
 }
 
 .interval-description strong.minit {
-    color: #800080; /* Purple to match minit hand */
+    color: #800080; /* Purple Minit */
 }
 
 .interval-description strong.huor {
-    color: #FF0000; /* Red to match huor hand */
+    color: #FF0000; /* Red Huor */
 }
 
 .interval-description .desc {
     font-size: 1.0em;
-    color: #fff;
+    color: #d0d0ff; /* Soft white to match starry vibe */
+    font-weight: normal;
+    font-family: Arial, sans-serif; /* Original font */
 }
 
 /* Button styling */
@@ -161,4 +157,118 @@ button {
 button:hover {
     background: rgba(0, 0, 0, 0.7);
     box-shadow: 0 0 15px rgba(0, 161, 214, 0.5);
+}
+
+/* Donation box styling */
+.donation-box {
+    background: rgba(0, 0, 0, 0.6); /* Match interval-description */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    max-width: 320px;
+    margin: 20px auto;
+    border: 1px solid #00A1D6; /* Botswana blue */
+    font-family: Arial, sans-serif;
+    box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
+    position: relative;
+}
+
+.donation-box .donation-title {
+    font-size: 1.0em;
+    color: #00A1D6; /* Botswana blue */
+    text-align: center;
+    margin-bottom: 24px; /* Increased for space below title */
+    font-weight: normal;
+}
+
+.donation-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.donation-box li {
+    margin-bottom: 10px;
+}
+
+.donation-box .crypto-button {
+    display: grid;
+    grid-template-columns: 30px 80px 1fr; /* Icon, name, address */
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1); /* Subtle highlight */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    font-family: Arial, sans-serif;
+    font-size: 1.0em;
+    line-height: 1.4;
+    position: relative;
+}
+
+.donation-box .crypto-button:hover {
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 15px rgba(0, 161, 214, 0.5); /* Unified Botswana blue glow */
+}
+
+.donation-box .crypto-button:active {
+    transform: scale(0.95); /* Push animation */
+}
+
+.donation-box .crypto-name.paypal {
+    color: #003087; /* PayPal blue */
+    font-weight: bold;
+}
+
+.donation-box .crypto-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+    object-fit: contain; /* Ensure images don't stretch */
+}
+
+.donation-box .crypto-name.bitcoin {
+    color: #F7931A; /* Bitcoin orange */
+    font-weight: bold;
+}
+
+.donation-box .crypto-name.solana {
+    background: linear-gradient(90deg, #9945FF, #14F195); /* Solana purple to green */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+}
+
+.donation-box .crypto-name.ethereum {
+    color: #627EEA; /* Ethereum grayish-purple */
+    font-weight: bold;
+}
+
+.donation-box .crypto-address {
+    font-size: 0.9em;
+    color: #d0d0ff; /* Soft white */
+    font-family: monospace; /* For address readability */
+    word-break: break-all;
+}
+
+.donation-box .copy-tooltip {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    background: rgba(0, 161, 214, 0.8); /* Botswana blue */
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    opacity: 0;
+    animation: fadeTooltip 1s ease-in-out;
+}
+
+@keyframes fadeTooltip {
+    0%, 100% { opacity: 0; transform: translateY(5px); }
+    20%, 80% { opacity: 1; transform: translateY(0); }
 }
