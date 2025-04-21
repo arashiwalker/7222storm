@@ -87,7 +87,7 @@ canvas {
     font-size: 1.0em;
     font-weight: bold;
     display: inline;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* Subtle glow for elegance */
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.1); /* Reduced glow for better readability */
 }
 
 .interval-description strong.mirtha {
