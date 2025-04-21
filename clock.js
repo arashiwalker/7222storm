@@ -9,22 +9,40 @@ if (!ctx) {
 let audioCtx;
 let isSoundOn = true;
 
-// Special mode tracking
-let isHarmonyMode = false;
-let harmonyMirthaCount = 0;
-const mirthasPerMinit = 22; // 22 Mirthas = 1 Minit
+// Preload the singing bowl sound for Mirtha
+let singingBowlBuffer = null;
 
-// Initialize AudioContext on page load
+async function loadSound(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to load audio: ${response.statusText}`);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+        return audioBuffer;
+    } catch (error) {
+        console.error('Error loading sound:', error);
+        return null;
+    }
+}
+
+// Initialize AudioContext and load sound on page load
 function initializeAudioContext() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         console.log('AudioContext initialized');
+        // Load the singing bowl sound
+        loadSound('sounds/singing_bowl.wav').then(buffer => {
+            singingBowlBuffer = buffer;
+            console.log('Singing bowl sound loaded successfully');
+        }).catch(err => {
+            console.error('Failed to load singing_bowl.wav:', err);
+        });
     }
     if (audioCtx.state === 'suspended') {
         audioCtx.resume().then(() => {
             console.log('AudioContext resumed');
             if (isSoundOn) {
-                playMirthaSound(); // Play sound immediately after resuming
+                playMirthaSound();
             }
         }).catch(err => console.error('Failed to resume AudioContext:', err));
     }
@@ -36,7 +54,6 @@ function setupAudioContextResume() {
     events.forEach(event => {
         document.addEventListener(event, function handler() {
             initializeAudioContext();
-            // Remove event listeners after first interaction
             events.forEach(ev => document.removeEventListener(ev, handler));
         }, { once: true });
     });
@@ -53,21 +70,28 @@ function playMirthaSound() {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
 
-        // Db note (277.18 Hz, root of D-flat major triad)
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.type = 'sine'; // Clean, meditative tone
-        oscillator.frequency.setValueAtTime(277.18, audioCtx.currentTime); // Db4
-        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-        gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.05); // Volume
-        gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.35); // Sustain
-        gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5); // Fade-out
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.start(audioCtx.currentTime);
-        oscillator.stop(audioCtx.currentTime + 0.5);
-
-        console.log('Mirtha sound played: Db note at 277.18 Hz');
+        if (singingBowlBuffer) {
+            const source = audioCtx.createBufferSource();
+            source.buffer = singingBowlBuffer;
+            source.connect(audioCtx.destination);
+            source.start(audioCtx.currentTime);
+            console.log('Mirtha sound played: singing_bowl.wav');
+        } else {
+            console.warn('Singing bowl not loaded, falling back to synthesized sound');
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(277.18, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.05);
+            gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.35);
+            gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.5);
+            console.log('Mirtha sound played: Fallback Db note at 277.18 Hz');
+        }
     } catch (error) {
         console.error('Audio error in playMirthaSound:', error);
     }
@@ -81,14 +105,13 @@ function playChime(note, duration = 0.1, isTriad = false) {
         }
 
         if (isTriad) {
-            // Play D-flat major triad (Db-F-Ab) for Huor
-            const notes = [277.18, 349.23, 415.30]; // Db4, F4, Ab4
+            const notes = [277.18, 349.23, 415.30];
             notes.forEach((freq, index) => {
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
                 oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.1); // Slight delay between notes
-                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime + index * 0.1); // Volume
+                oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.1);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime + index * 0.1);
                 oscillator.connect(gainNode);
                 gainNode.connect(audioCtx.destination);
                 oscillator.start(audioCtx.currentTime + index * 0.1);
@@ -96,12 +119,11 @@ function playChime(note, duration = 0.1, isTriad = false) {
             });
             console.log('Huor triad played: D-flat major (Db-F-Ab)');
         } else {
-            // Play single note for Minit (Ab)
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             oscillator.type = 'sine';
             oscillator.frequency.setValueAtTime(note, audioCtx.currentTime);
-            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // Volume
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             oscillator.start();
@@ -115,10 +137,9 @@ function playChime(note, duration = 0.1, isTriad = false) {
 
 function playHarmonySounds() {
     if (!isSoundOn) return;
-    // Play all three sounds together: Mirtha (Db), Minit (Ab), and Huor (triad)
-    playMirthaSound(); // Db note
-    playChime(415.30); // Ab note for Minit
-    playChime(null, 0.3, true); // D-flat major triad for Huor
+    playMirthaSound();
+    playChime(415.30);
+    playChime(null, 0.3, true);
     console.log('Harmony mode: Played all interval sounds together');
 }
 
@@ -154,15 +175,21 @@ const totalMirthas = 22;
 const totalMinits = 50;
 const totalHuors = 24;
 
-const secondsInterval = (1000 * 72) / 22;
-const minutesInterval = secondsInterval * totalMirthas;
-const huorsInterval = minutesInterval * totalMinits;
+const secondsInterval = (1000 * 72) / 22; // ~3272.727ms
+const minutesInterval = secondsInterval * totalMirthas; // ~72s
+const huorsInterval = minutesInterval * totalMinits; // ~3600s
 
 const startTime = new Date("2020-02-01T23:00:00").getTime();
 
-let lastMirthaTick = 0;
-let lastMinitTick = 0;
-let lastHuorTick = 0;
+let lastMirthaTick = -1;
+let lastMinitTick = -1;
+let lastHuorTick = -1;
+
+// Special mode tracking
+let isHarmonyMode = false;
+let harmonyMirthaCount = 0;
+const mirthasPerMinit = 22;
+let isFirstFrame = true; // Flag to skip harmony mode on first frame
 
 // Glowing ring animation state
 let mirthaGlowOpacity = 0;
@@ -183,42 +210,36 @@ function drawClockFace() {
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    // Glowing ring for Mirtha (outermost)
     ctx.beginPath();
     ctx.arc(centerX, centerY, clockRadius + 5, 0, 2 * Math.PI);
-    ctx.strokeStyle = `rgba(0, 255, 0, ${mirthaGlowOpacity})`; // Green glow
+    ctx.strokeStyle = `rgba(0, 255, 0, ${mirthaGlowOpacity})`;
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    // Glowing ring for Minit
     ctx.beginPath();
     ctx.arc(centerX, centerY, (clockRadius * 2) / 3 + 5, 0, 2 * Math.PI);
-    ctx.strokeStyle = `rgba(128, 0, 128, ${minitGlowOpacity})`; // Purple glow
+    ctx.strokeStyle = `rgba(128, 0, 128, ${minitGlowOpacity})`;
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    // Glowing ring for Huor
     ctx.beginPath();
     ctx.arc(centerX, centerY, clockRadius / 3 + 5, 0, 2 * Math.PI);
-    ctx.strokeStyle = `rgba(255, 0, 0, ${huorGlowOpacity})`; // Red glow
+    ctx.strokeStyle = `rgba(255, 0, 0, ${huorGlowOpacity})`;
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    // Mirtha Circle
     ctx.beginPath();
     ctx.arc(centerX, centerY, clockRadius, 0, 2 * Math.PI);
     ctx.strokeStyle = '#00FF00';
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Minit Circle
     ctx.beginPath();
     ctx.arc(centerX, centerY, (clockRadius * 2) / 3, 0, 2 * Math.PI);
     ctx.strokeStyle = '#800080';
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Huor Circle
     ctx.beginPath();
     ctx.arc(centerX, centerY, clockRadius / 3, 0, 2 * Math.PI);
     ctx.strokeStyle = '#FF0000';
@@ -307,66 +328,72 @@ function drawClockHands() {
     const minitTick = Math.floor(elapsedTime / minutesInterval) % totalMinits + 1;
     const huorTick = Math.floor(elapsedTime / huorsInterval) % totalHuors + 1;
 
+    // Detect if all ticks have changed simultaneously
+    const mirthaChanged = mirthaTick !== lastMirthaTick;
+    const minitChanged = minitTick !== lastMinitTick;
+    const huorChanged = huorTick !== lastHuorTick;
+
     // Update Mirtha glow and sound
-    if (mirthaTick !== lastMirthaTick) {
-        // Check for alignment of all intervals to trigger harmony mode
-        if (mirthaTick === 1 && minitTick === 1 && huorTick === 1) {
+    if (mirthaChanged) {
+        // Skip harmony mode check on the first frame
+        if (!isFirstFrame && mirthaChanged && minitChanged && huorChanged && !isHarmonyMode) {
             isHarmonyMode = true;
-            harmonyMirthaCount = 0; // Reset counter
-            console.log('All intervals aligned, starting harmony mode for 1 Minit');
+            harmonyMirthaCount = 0;
+            console.log('Harmony mode started: All ticks changed simultaneously (Mirtha:', mirthaTick, 'Minit:', minitTick, 'Huor:', huorTick, ')');
         }
 
         if (isHarmonyMode) {
-            playHarmonySounds(); // Play all sounds together
+            playHarmonySounds(); // Play all sounds together every Mirtha
             harmonyMirthaCount++;
+            console.log(`Harmony mode: Played sounds on Mirtha tick ${mirthaTick}, count: ${harmonyMirthaCount}`);
             if (harmonyMirthaCount >= mirthasPerMinit) {
-                isHarmonyMode = false; // End harmony mode after 1 Minit (22 Mirthas)
-                console.log('Harmony mode ended after 1 Minit');
+                isHarmonyMode = false;
+                harmonyMirthaCount = 0; // Reset count to prevent accumulation
+                console.log('Harmony mode ended after 1 Minit (22 Mirthas)');
             }
         } else {
-            playMirthaSound(); // Play Db note (277.18 Hz)
+            playMirthaSound(); // Play only Mirtha sound outside harmony mode
+            console.log(`Regular mode: Played Mirtha sound on tick ${mirthaTick}`);
         }
         lastMirthaTick = mirthaTick;
-        mirthaGlowOpacity = 1; // Start glow at max
+        mirthaGlowOpacity = 1;
         console.log('Mirtha tick:', mirthaTick);
     } else {
-        // Fade glow over the Mirtha interval (~3272.727 ms)
         const glowStep = (elapsedTime % secondsInterval) / secondsInterval;
-        mirthaGlowOpacity = 1 - glowStep; // Linear fade from 1 to 0
+        mirthaGlowOpacity = 1 - glowStep;
 
-        // During harmony mode, make all rings pulse together
         if (isHarmonyMode) {
-            minitGlowOpacity = 1 - glowStep; // Pulse Minit ring
-            huorGlowOpacity = 1 - glowStep;  // Pulse Huor ring
+            minitGlowOpacity = 1 - glowStep;
+            huorGlowOpacity = 1 - glowStep;
         }
     }
 
     // Update Minit glow and sound (Ab note)
-    if (minitTick !== lastMinitTick) {
-        if (!isHarmonyMode) { // Only play if not in harmony mode
-            playChime(415.30); // Ab4
-            console.log('Minit sound triggered outside harmony mode');
-        }
+    if (minitChanged && !isHarmonyMode) {
+        playChime(415.30);
+        console.log('Minit sound triggered outside harmony mode');
         lastMinitTick = minitTick;
-        minitGlowOpacity = 1; // Start glow at max
+        minitGlowOpacity = 1;
         console.log('Minit tick:', minitTick);
     } else if (!isHarmonyMode) {
-        // Fade glow over the Mirtha interval (~3272.727 ms) to match Mirtha, but only if not in harmony mode
-        minitGlowOpacity = Math.max(0, minitGlowOpacity - (1 / (secondsInterval / 16.666))); // Fade over ~3.273s
+        minitGlowOpacity = Math.max(0, minitGlowOpacity - (1 / (secondsInterval / 16.666)));
     }
 
     // Update Huor glow and sound (D-flat major triad: Db-F-Ab)
-    if (huorTick !== lastHuorTick) {
-        if (!isHarmonyMode) { // Only play if not in harmony mode
-            playChime(null, 0.3, true); // Play D-flat major triad
-            console.log('Huor sound triggered outside harmony mode');
-        }
+    if (huorChanged && !isHarmonyMode) {
+        playChime(null, 0.3, true);
+        console.log('Huor sound triggered outside harmony mode');
         lastHuorTick = huorTick;
-        huorGlowOpacity = 1; // Start glow at max
+        huorGlowOpacity = 1;
         console.log('Huor tick:', huorTick);
     } else if (!isHarmonyMode) {
-        // Fade glow over the Mirtha interval (~3272.727 ms) to match Mirtha, but only if not in harmony mode
-        huorGlowOpacity = Math.max(0, huorGlowOpacity - (1 / (secondsInterval / 16.666))); // Fade over ~3.273s
+        huorGlowOpacity = Math.max(0, huorGlowOpacity - (1 / (secondsInterval / 16.666)));
+    }
+
+    // Mark the first frame as processed
+    if (isFirstFrame) {
+        isFirstFrame = false;
+        console.log('First frame processed, skipping harmony mode check');
     }
 
     const mirthaFraction = (elapsedTime % secondsInterval) / secondsInterval;
