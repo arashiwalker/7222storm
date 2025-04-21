@@ -121,7 +121,7 @@ canvas {
 
 button {
     margin: 5px 0;
-    padding: 8px 16px;
+    padding: 8 make it so in the QR section they almost take up most the of the screen if you were to look at it from a phone to make it as easy as possible to take a picture of and not scan the other QR codes by mistakepx 16px;
     font-size: 1.0em;
     background: rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(0, 161, 214, 0.5);
@@ -167,7 +167,7 @@ button:hover {
 .donation-box .crypto-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 30px; /* Default gap for mobile */
     justify-content: center;
 }
 
@@ -175,9 +175,8 @@ button:hover {
     background: rgba(255, 255, 255, 0.05); /* Slightly lighter semi-transparent */
     border: 1px solid #00A1D6; /* Botswana blue */
     border-radius: 8px;
-    padding: 8px;
-    width: 100%;
-    max-width: 280px;
+    padding: 12px; /* Increased padding for mobile */
+    width: 90%; /* Nearly full width on mobile */
     box-shadow: 0 0 8px rgba(0, 161, 214, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer; /* Indicate clickable */
@@ -199,6 +198,7 @@ button:hover {
     align-items: center;
     gap: 6px;
     margin-bottom: 6px;
+    justify-content: center; /* Center the header content */
 }
 
 .donation-box .crypto-icon {
@@ -228,11 +228,21 @@ button:hover {
     color: #627EEA; /* Ethereum grayish-purple */
 }
 
+.donation-box .crypto-address {
+    display: block;
+    font-size: 0.8em;
+    color: #d0d0ff; /* Soft white */
+    font-family: monospace;
+    word-break: break-all;
+    text-align: center;
+    margin-bottom: 8px; /* Space between address and QR code */
+}
+
 .donation-box .crypto-qr {
     display: block;
-    width: 80px; /* Smaller for compactness */
-    height: 80px;
-    margin: 4px auto 0;
+    width: 200px; /* Larger size for mobile */
+    height: 200px;
+    margin: 8px auto 0; /* Increased margin for separation */
     border: 1px solid #00A1D6; /* Botswana blue border */
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 161, 214, 0.2); /* Subtle glow */
@@ -287,6 +297,25 @@ button:hover {
 .donation-box .crypto-name.paypal {
     color: #003087; /* PayPal blue */
     font-weight: bold;
+}
+
+/* Media query for larger screens (tablets, desktops) */
+@media (min-width: 601px) {
+    .donation-box .crypto-container {
+        gap: 20px; /* Slightly smaller gap for larger screens */
+    }
+
+    .donation-box .crypto-card {
+        width: auto; /* Allow cards to fit naturally */
+        max-width: 320px; /* Slightly larger for larger screens */
+        padding: 8px; /* Revert padding for larger screens */
+    }
+
+    .donation-box .crypto-qr {
+        width: 140px; /* Slightly larger than before but smaller than mobile */
+        height: 140px;
+        margin: 4px auto 0; /* Revert margin for larger screens */
+    }
 }
 
 /* Footer styling */

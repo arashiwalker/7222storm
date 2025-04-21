@@ -69,7 +69,7 @@ function playMirthaSound() {
 
         console.log('Mirtha sound played: Db note at 277.18 Hz');
     } catch (error) {
-        console.error('Audio error:', error);
+        console.error('Audio error in playMirthaSound:', error);
     }
 }
 
@@ -106,10 +106,10 @@ function playChime(note, duration = 0.1, isTriad = false) {
             gainNode.connect(audioCtx.destination);
             oscillator.start();
             oscillator.stop(audioCtx.currentTime + duration);
-            console.log(`Chime played: ${note} Hz`);
+            console.log(`Minit chime played: ${note} Hz`);
         }
     } catch (error) {
-        console.error('Audio error:', error);
+        console.error('Audio error in playChime:', error);
     }
 }
 
@@ -345,6 +345,7 @@ function drawClockHands() {
     if (minitTick !== lastMinitTick) {
         if (!isHarmonyMode) { // Only play if not in harmony mode
             playChime(415.30); // Ab4
+            console.log('Minit sound triggered outside harmony mode');
         }
         lastMinitTick = minitTick;
         minitGlowOpacity = 1; // Start glow at max
@@ -358,6 +359,7 @@ function drawClockHands() {
     if (huorTick !== lastHuorTick) {
         if (!isHarmonyMode) { // Only play if not in harmony mode
             playChime(null, 0.3, true); // Play D-flat major triad
+            console.log('Huor sound triggered outside harmony mode');
         }
         lastHuorTick = huorTick;
         huorGlowOpacity = 1; // Start glow at max
