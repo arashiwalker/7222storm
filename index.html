@@ -18,9 +18,9 @@
                 <div class="interval-description">
                     <p class="mirtha-intro">72/22 Clock introduces the Mirtha. Replacement of the Second</p>
                     <ul>
-                        <li><span id="mirtha-tick" class="tick mirtha">00</span> <strong class="mirtha">Mirtha</strong> <span class="desc">1 Mirtha = 72/22 (~3.27273s) seconds</span></li>
-                        <li><span id="minit-tick" class="tick minit">00</span> <strong class="minit">Minit</strong> <span class="desc">1 Minit = 22 Mirthas</span></li>
-                        <li><span id="huor-tick" class="tick huor">00</span> <strong class="huor">Huor</strong> <span class="desc">1 Huor = 50 Minits</span></li>
+                        <li><strong class="mirtha">MIRTHA</strong> <span class="desc">1 Mirtha = 72/22 || 3.27273seconds</span></li>
+                        <li><strong class="minit">MINIT</strong> <span class="desc">1 Minit = 22 Mirthas</span></li>
+                        <li><strong class="huor">HUOR</strong> <span class="desc">1 Huor = 50 Minits</span></li>
                     </ul>
                 </div>
                 <div class="button-container">
@@ -28,40 +28,43 @@
                 </div>
                 <div class="donation-box">
                     <p class="donation-title">Support the 72/22 Clock</p>
-                    <ul>
-                        <li>
-                            <button class="crypto-button" onclick="copyAddress(this, 'bc1qwse0y2tw9660m9c5zss7te2r9h2fjjdvvjkk0p')">
+                    <div class="crypto-container">
+                        <div class="crypto-card" onclick="copyAddress(this, 'bc1qwse0y2tw9660m9c5zss7te2r9h2fjjdvvjkk0p')">
+                            <div class="crypto-header">
                                 <img src="images/btc-logo.png.png" alt="Bitcoin" class="crypto-icon">
                                 <strong class="crypto-name bitcoin">Bitcoin</strong>
-                                <span class="crypto-address">bc1qwse0y2tw9660m9c5zss7te2r9h2fjjdvvjkk0p</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button class="crypto-button" onclick="copyAddress(this, 'F2KVfuETeNo6grEJC3ULs1n7c8xWswCx5hKWTKxYGE8J')">
-                                <img src="images/sol-logo.png.png" alt="Solana" class="crypto-icon">
+                            </div>
+                            <img src="images/btc-qr.png.png" alt="Bitcoin QR Code" class="crypto-qr">
+                        </div>
+                        <div class="crypto-card" onclick="copyAddress(this, 'F2KVfuETeNo6grEJC3ULs1n7c8xWswCx5hKWTKxYGE8J')">
+                            <div class="crypto-header">
+                                <img src="images/sol-logo.png" alt="Solana" class="crypto-icon">
                                 <strong class="crypto-name solana">Solana</strong>
-                                <span class="crypto-address">F2KVfuETeNo6grEJC3ULs1n7c8xWswCx5hKWTKxYGE8J</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button class="crypto-button" onclick="copyAddress(this, '0x579ac14f8F6BCBc34B52c01e3b834a52dEfb61AD')">
-                                <img src="images/eth-logo.png.png" alt="Ethereum" class="crypto-icon">
+                            </div>
+                            <img src="images/sol-qr.png.png" alt="Solana QR Code" class="crypto-qr">
+                        </div>
+                        <div class="crypto-card" onclick="copyAddress(this, '0x579ac14f8F6BCBc34B52c01e3b834a52dEfb61AD')">
+                            <div class="crypto-header">
+                                <img src="images/eth-logo.png" alt="Ethereum" class="crypto-icon">
                                 <strong class="crypto-name ethereum">Ethereum</strong>
-                                <span class="crypto-address">0x579ac14f8F6BCBc34B52c01e3b834a52dEfb61AD</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button class="crypto-button" onclick="openPayPalLink('https://www.paypal.me/YOUR_PAYPAL_ID')">
-                                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" class="crypto-icon">
-                                <strong class="crypto-name paypal">PayPal</strong>
-                                <span class="crypto-address">Donate via PayPal</span>
-                            </button>
-                        </li>
-                    </ul>
+                            </div>
+                            <img src="images/eth QR.jpeg" alt="Ethereum QR Code" class="crypto-qr">
+                        </div>
+                    </div>
+                    <div class="paypal-container">
+                        <button class="crypto-button paypal-button" onclick="openPayPalLink('https://www.paypal.me/YOUR_PAYPAL_ID')">
+                            <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" class="crypto-icon">
+                            <strong class="crypto-name paypal">PayPal</strong>
+                            <span class="crypto-address">Donate via PayPal</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <footer>
+        <p>© 2025 7222clock.com <span class="copyright-tooltip">All Rights Reserved. Unauthorized use prohibited.</span></p>
+    </footer>
     <script src="clock.js"></script>
     <script>
         function copyAddress(element, address) {
