@@ -1,0 +1,1 @@
+node_modules/ .envnetstat -aon | findstr :3000

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>72/22 Clock</title>
+    <title>72/22 Clock - MirthaNode</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,11 +22,8 @@
                         <li><strong class="minit">MINIT</strong> <span class="desc">1 Minit = 22 Mirthas</span></li>
                         <li><strong class="huor">HUOR</strong> <span class="desc">1 Huor = 50 Minits</span></li>
                     </ul>
-                 
-                        <button id="toggleSound">🔊 Sound: On</button>
-                 
+                    <button id="toggleSound">🔊 Sound: On</button>
                 </div>
-              
                 <div class="donation-box">
                     <div class="crypto-container">
                         <div class="crypto-card" onclick="copyAddress(this, 'bc1qwse0y2tw9660m9c5zss7te2r9h2fjjdvvjkk0p')">
@@ -54,6 +51,11 @@
                             <img src="images/eth QR.jpeg" alt="Ethereum QR Code" class="crypto-qr">
                         </div>
                     </div>
+                    <div class="stripe-container">
+                        <button id="stripeCheckoutButton" class="stripe-button">
+                            <strong class="crypto-name stripe">Donate with Stripe</strong>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,8 +63,10 @@
     <footer>
         <p>© 2025 7222clock.com <span class="copyright-tooltip">All Rights Reserved. Unauthorized use prohibited.</span></p>
     </footer>
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="clock.js"></script>
     <script>
+        console.log('MirthaNode: Script loaded');
         function copyAddress(element, address) {
             navigator.clipboard.writeText(address).then(() => {
                 const tooltip = document.createElement('span');
@@ -70,11 +74,45 @@
                 tooltip.className = 'copy-tooltip';
                 element.appendChild(tooltip);
                 setTimeout(() => tooltip.remove(), 1000);
-            }).catch(err => console.error('Copy failed:', err));
+            }).catch(err => console.error('MirthaNode: Copy failed:', err));
         }
 
-        function openPayPalLink(url) {
-            window.open(url, '_blank');
+        console.log('MirthaNode: Initializing Stripe...');
+        const stripe = Stripe('pk_test_51RFpR0QP5g5uuPQITUsacX8niKDArWLIFkNOPbJLR7mIemviNYlgxbkGnnwyGpwSPgT9wLgzrt7QQBBGrxc5rCfS00sHoncL5q');
+        console.log('MirthaNode: Stripe initialized');
+
+        const stripeButton = document.getElementById('stripeCheckoutButton');
+        if (stripeButton) {
+            console.log('MirthaNode: Stripe button found');
+            stripeButton.addEventListener('click', async () => {
+                console.log('MirthaNode: Stripe button clicked');
+                try {
+                    console.log('MirthaNode: Fetching checkout session...');
+                    const response = await fetch('http://localhost:3000/create-checkout-session', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ amount: 500 })
+                    });
+                    console.log('MirthaNode: Fetch response:', response.status, response.statusText);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
+                    }
+                    const session = await response.json();
+                    console.log('MirthaNode: Checkout session:', session);
+                    if (session.id) {
+                        const result = await stripe.redirectToCheckout({ sessionId: session.id });
+                        if (result.error) {
+                            console.error('MirthaNode: Stripe redirect error:', result.error.message);
+                        }
+                    } else {
+                        console.error('MirthaNode: No session ID returned:', session);
+                    }
+                } catch (error) {
+                    console.error('MirthaNode: Error in Stripe checkout:', error.message);
+                }
+            });
+        } else {
+            console.error('MirthaNode: Stripe button not found!');
         }
     </script>
 </body>

@@ -55,19 +55,19 @@ canvas {
     background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark */
     padding: 20px;
     border-radius: 10px;
-    text-align: center; /* Center the content */
+    text-align: center;
     max-width: 320px;
     margin: 20px auto;
     border: 1px solid #00A1D6; /* Botswana blue */
-    font-family: Arial, sans-serif; /* Original font */
-    box-shadow: 0 0 10px rgba(0, 161, 214, 0.2); /* Subtle glow */
+    font-family: Arial, sans-serif;
+    box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
 }
 
 .interval-description .mirtha-intro {
-    font-size: 1.0em; /* Minimalist */
-    color: #00A1D6; /* Botswana blue */
+    font-size: 1.0em;
+    color: #00A1D6;
     text-align: center;
-    margin-bottom: 24px; /* Space below title */
+    margin-bottom: 24px;
     font-weight: normal;
 }
 
@@ -87,38 +87,30 @@ canvas {
     font-size: 1.0em;
     font-weight: bold;
     display: inline;
-    text-shadow: 0 0 2px rgba(255, 255, 255, 0.1); /* Reduced glow for better readability */
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
 .interval-description strong.mirtha {
-    color: #00FF00; /* Green Mirtha */
+    color: #00FF00;
 }
 
 .interval-description strong.minit {
-    color: #800080; /* Purple Minit */
+    color: #800080;
 }
 
 .interval-description strong.huor {
-    color: #FF0000; /* Red Huor */
+    color: #FF0000;
 }
 
 .interval-description .desc {
     font-size: 1.0em;
-    color: #d0d0ff; /* Soft white to match starry vibe */
+    color: #d0d0ff;
     font-weight: normal;
     font-family: Arial, sans-serif;
     display: inline;
 }
 
 /* Button styling */
-.button-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 20px 0;
-    align-items: center;
-}
-
 button {
     margin: 5px 0;
     padding: 8px 16px;
@@ -144,43 +136,35 @@ button:hover {
 
 /* Donation box styling */
 .donation-box {
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark */
+    background: rgba(0, 0, 0, 0.6);
     padding: 15px;
     border-radius: 10px;
     text-align: center;
     max-width: 320px;
     margin: 20px auto;
-    border: 1px solid #00A1D6; /* Botswana blue */
+    border: 1px solid #00A1D6;
     font-family: Arial, sans-serif;
     box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
     position: relative;
 }
 
-.donation-box .donation-title {
-    font-size: 1.0em;
-    color: #00A1D6; /* Botswana blue */
-    text-align: center;
-    margin-bottom: 15px;
-    font-weight: normal;
-}
-
 .donation-box .crypto-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px; /* Default gap for mobile */
+    gap: 30px;
     justify-content: center;
 }
 
 .donation-box .crypto-card {
-    background: none; /* Remove semi-transparent background */
-    border: none; /* Remove border */
-    box-shadow: none; /* Remove glow */
-    border-radius: 0; /* Remove rounded corners */
-    padding: 0; /* Remove padding */
-    width: 90%; /* Nearly full width on mobile */
-    transition: transform 0.3s ease; /* Keep transform transition for hover/active */
-    cursor: pointer; /* Indicate clickable */
-    position: relative; /* For tooltip positioning */
+    background: none;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    width: 90%;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    position: relative;
 }
 
 .donation-box .crypto-card:hover {
@@ -188,7 +172,7 @@ button:hover {
 }
 
 .donation-box .crypto-card:hover .crypto-qr {
-    box-shadow: 0 0 12px rgba(0, 161, 214, 0.5); /* Apply glow to QR code on hover */
+    box-shadow: 0 0 12px rgba(0, 161, 214, 0.5);
 }
 
 .donation-box .crypto-card:active {
@@ -196,7 +180,7 @@ button:hover {
 }
 
 .donation-box .crypto-card:active .crypto-qr {
-    box-shadow: 0 0 15px rgba(0, 161, 214, 0.8); /* Apply stronger glow on active */
+    box-shadow: 0 0 15px rgba(0, 161, 214, 0.8);
 }
 
 .donation-box .crypto-header {
@@ -204,7 +188,7 @@ button:hover {
     align-items: center;
     gap: 6px;
     margin-bottom: 6px;
-    justify-content: center; /* Center the header content */
+    justify-content: center;
 }
 
 .donation-box .crypto-icon {
@@ -220,47 +204,47 @@ button:hover {
 }
 
 .donation-box .crypto-name.bitcoin {
-    color: #F7931A; /* Bitcoin orange */
+    color: #F7931A;
 }
 
 .donation-box .crypto-name.solana {
-    background: linear-gradient(90deg, #9945FF, #14F195); /* Solana purple to green */
+    background: linear-gradient(90deg, #9945FF, #14F195);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
 
 .donation-box .crypto-name.ethereum {
-    color: #627EEA; /* Ethereum grayish-purple */
+    color: #627EEA;
 }
 
 .donation-box .crypto-address {
     display: block;
     font-size: 0.8em;
-    color: #d0d0ff; /* Soft white */
+    color: #d0d0ff;
     font-family: monospace;
-    overflow-wrap: break-word; /* Wrap naturally at word boundaries */
-    max-width: 100%; /* Prevent overflow */
+    overflow-wrap: break-word;
+    max-width: 100%;
     text-align: center;
-    margin-bottom: 8px; /* Space between address and QR code */
+    margin-bottom: 8px;
 }
 
 .donation-box .crypto-qr {
     display: block;
-    width: 200px; /* Larger size for mobile */
+    width: 200px;
     height: 200px;
-    margin: 8px auto 0; /* Increased margin for separation */
-    border: 1px solid #00A1D6; /* Botswana blue border */
+    margin: 8px auto 0;
+    border: 1px solid #00A1D6;
     border-radius: 4px;
-    box-shadow: 0 0 5px rgba(0, 161, 214, 0.2); /* Subtle glow */
-    transition: box-shadow 0.3s ease; /* Smooth glow transition */
+    box-shadow: 0 0 5px rgba(0, 161, 214, 0.2);
+    transition: box-shadow 0.3s ease;
 }
 
 .donation-box .copy-tooltip {
     position: absolute;
     top: -20px;
     right: 0;
-    background: rgba(0, 161, 214, 0.8); /* Botswana blue */
+    background: rgba(0, 161, 214, 0.8);
     color: #fff;
     padding: 2px 8px;
     border-radius: 4px;
@@ -269,11 +253,12 @@ button:hover {
     animation: fadeTooltip 1s ease-in-out;
 }
 
-.donation-box .paypal-container {
+/* Stripe button styling */
+.stripe-container {
     margin-top: 10px;
 }
 
-.donation-box .paypal-button {
+.stripe-button {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -289,50 +274,55 @@ button:hover {
     line-height: 1.4;
     position: relative;
     -webkit-tap-highlight-color: transparent;
+    justify-content: center;
 }
 
-.donation-box .paypal-button:hover {
+.stripe-button:hover {
     background: rgba(0, 0, 0, 0.7);
     box-shadow: 0 0 15px rgba(0, 161, 214, 0.5);
 }
 
-.donation-box .paypal-button:active {
+.stripe-button:active {
     transform: scale(0.95);
     box-shadow: 0 0 20px rgba(0, 161, 214, 0.8);
     transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-.donation-box .crypto-name.paypal {
-    color: #003087; /* PayPal blue */
+.stripe-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    object-fit: contain;
+}
+
+.donation-box .crypto-name.stripe {
+    color: #635BFF;
     font-weight: bold;
 }
 
-/* Media query for larger screens (tablets, desktops) */
+/* Media query for larger screens */
 @media (min-width: 601px) {
     .donation-box .crypto-container {
-        gap: 20px; /* Slightly smaller gap for larger screens */
+        gap: 20px;
     }
-
     .donation-box .crypto-card {
-        width: auto; /* Allow cards to fit naturally */
-        max-width: 320px; /* Slightly larger for larger screens */
+        width: auto;
+        max-width: 320px;
     }
-
     .donation-box .crypto-qr {
-        width: 140px; /* Slightly larger than before but smaller than mobile */
+        width: 140px;
         height: 140px;
-        margin: 4px auto 0; /* Revert margin for larger screens */
+        margin: 4px auto 0;
     }
-
     .donation-box .crypto-address {
-        font-size: 0.8em; /* Slightly larger font on larger screens */
+        font-size: 0.8em;
     }
 }
 
 /* Media query for mobile screens */
 @media (max-width: 600px) {
     .donation-box .crypto-address {
-        font-size: 0.7em; /* Smaller font on mobile to help fit */
+        font-size: 0.7em;
     }
 }
 
@@ -341,7 +331,7 @@ footer {
     text-align: center;
     padding: 8px;
     font-size: 0.8em;
-    color: #a0a0ff; /* Soft purple-white for cosmic vibe */
+    color: #a0a0ff;
     width: 100%;
     margin-top: auto;
 }
@@ -361,14 +351,14 @@ footer p:hover .copyright-tooltip {
 
 .copyright-tooltip {
     visibility: hidden;
-    background: rgba(0, 161, 214, 0.8); /* Botswana blue */
+    background: rgba(0, 161, 214, 0.8);
     color: #fff;
     text-align: center;
     padding: 5px 10px;
     border-radius: 4px;
     position: absolute;
     z-index: 1;
-    bottom: 125%; /* Above the footer text */
+    bottom: 125%;
     left: 50%;
     transform: translateX(-50%);
     font-size: 0.8em;
