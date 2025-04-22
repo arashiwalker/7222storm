@@ -91,7 +91,7 @@
                     const response = await fetch('/create-checkout-session', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        credentials: 'same-origin', // Include cookies if needed
+                        credentials: 'same-origin',
                         body: JSON.stringify({ amount: 500 }) // $5 donation
                     });
                     console.log('MirthaNode: Fetch response:', response.status, response.statusText);
