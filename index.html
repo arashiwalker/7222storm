@@ -88,10 +88,11 @@
                 console.log('MirthaNode: Stripe button clicked');
                 try {
                     console.log('MirthaNode: Fetching checkout session...');
-                    const response = await fetch('http://localhost:3000/create-checkout-session', {
+                    const response = await fetch('/create-checkout-session', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ amount: 500 })
+                        credentials: 'same-origin', // Include cookies if needed
+                        body: JSON.stringify({ amount: 500 }) // $5 donation
                     });
                     console.log('MirthaNode: Fetch response:', response.status, response.statusText);
                     if (!response.ok) {
