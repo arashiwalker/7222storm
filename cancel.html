@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Canceled - 72/22 Clock</title>
+    <title>Donation Successful - 72/22 Clock</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Payment Canceled</h1>
-        <p>You canceled the donation.</p>
-        <a href="/">Back to 72/22 Clock</a>
+        <h1>Thank You!</h1>
+        <p>Your donation was successful.</p>
+        <p id="sessionId"></p>
+        <a href="https://7222clock.com">Back to 72/22 Clock</a>
     </div>
+    <script>
+        // Get the session ID from the URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        if (sessionId) {
+            document.getElementById('sessionId').textContent = `Transaction ID: ${sessionId}`;
+        }
+    </script>
 </body>
 </html>
