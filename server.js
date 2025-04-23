@@ -6,7 +6,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com',
+    origin: 'https://7222clock.com',
     credentials: true,
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
@@ -69,8 +69,8 @@ app.post('/create-checkout-session', async (req, res) => {
                 quantity: 1
             }],
             mode: 'payment',
-            success_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/success.html?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/cancel.html',
+            success_url: 'https://7222clock.com/success.html?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url: 'https://7222clock.com/cancel.html',
             expires_at: Math.floor(Date.now() / 1000) + (60 * 60 * 24) // Expire in 24 hours
         });
         console.log('MirthaNode: Session created:', session.id, 'Expires at:', new Date(session.expires_at * 1000));
