@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const path = require('path');
 const app = express();
 
 // Middleware
@@ -11,11 +12,41 @@ app.use(cors({
     allowedHeaders: ['Content-Type']
 }));
 app.use(express.json());
-// Log static file requests
+// Log all requests
 app.use((req, res, next) => {
-    console.log(`MirthaNode: Serving static file: ${req.path}`);
+    console.log(`MirthaNode: Request received: ${req.method} ${req.url}`);
     next();
 });
+
+// Specific route for /success to handle query parameters
+app.get('/success', (req, res) => {
+    console.log('MirthaNode: Handling /success route');
+    console.log('MirthaNode: Query parameters:', req.query);
+    const filePath = path.join(__dirname, 'success.html');
+    console.log('MirthaNode: Attempting to serve:', filePath);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error('MirthaNode: Error serving success.html:', err);
+            res.status(404).send('Success page not found');
+        }
+    });
+});
+
+// Specific route for /cancel to handle query parameters
+app.get('/cancel', (req, res) => {
+    console.log('MirthaNode: Handling /cancel route');
+    console.log('MirthaNode: Query parameters:', req.query);
+    const filePath = path.join(__dirname, 'cancel.html');
+    console.log('MirthaNode: Attempting to serve:', filePath);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error('MirthaNode: Error serving cancel.html:', err);
+            res.status(404).send('Cancel page not found');
+        }
+    });
+});
+
+// Serve static files after specific routes
 app.use(express.static('.'));
 
 // Log server start
@@ -38,8 +69,8 @@ app.post('/create-checkout-session', async (req, res) => {
                 quantity: 1
             }],
             mode: 'payment',
-            success_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/cancel',
+            success_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/success.html?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/cancel.html',
             expires_at: Math.floor(Date.now() / 1000) + (60 * 60 * 24) // Expire in 24 hours
         });
         console.log('MirthaNode: Session created:', session.id, 'Expires at:', new Date(session.expires_at * 1000));
