@@ -11,6 +11,11 @@ app.use(cors({
     allowedHeaders: ['Content-Type']
 }));
 app.use(express.json());
+// Log static file requests
+app.use((req, res, next) => {
+    console.log(`MirthaNode: Serving static file: ${req.path}`);
+    next();
+});
 app.use(express.static('.'));
 
 // Log server start
@@ -43,6 +48,20 @@ app.post('/create-checkout-session', async (req, res) => {
     } catch (error) {
         console.error('MirthaNode: Stripe error:', error.message, error.stack);
         console.error('MirthaNode: Stripe error details:', JSON.stringify(error, null, 2));
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Test endpoint to retrieve a session
+app.get('/test-session/:sessionId', async (req, res) => {
+    const sessionId = req.params.sessionId;
+    console.log('MirthaNode: Received request to retrieve session:', sessionId);
+    try {
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        console.log('MirthaNode: Retrieved session:', JSON.stringify(session, null, 2));
+        res.status(200).json(session);
+    } catch (error) {
+        console.error('MirthaNode: Retrieve session error:', error.message, error.stack);
         res.status(500).json({ error: error.message });
     }
 });
