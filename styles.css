@@ -1,385 +1,68 @@
-/* General page styling */
-body, html {
-    margin: 0;
-    padding: 20px;
-    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, #181818;
+body {
+    background: #1e3a8a; /* Botswana blue */
     color: #fff;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
-}
-
-/* Two-column layout */
-.main-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    font-family: 'Ghibli', sans-serif;
+    margin: 0;
+    overflow: hidden;
+  }
+  
+  #particles-js {
+    position: fixed;
     width: 100%;
-    max-width: 1200px;
-}
-
-.clock-section, .info-section {
+    height: 100%;
+    z-index: -1;
+  }
+  
+  .main-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .clock-container {
     flex: 1;
-    min-width: 300px;
-}
-
-/* Clock styling */
-.clock-container {
-    margin: 20px 0;
-}
-
-canvas {
-    border: 5px solid #00A1D6; /* Botswana blue */
-    border-radius: 50%;
-    background-color: #282828;
-    width: 100%;
-    max-width: 500px;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    box-shadow: 0 0 20px rgba(0, 161, 214, 0.5); /* Glowing effect */
-}
-
-/* Interval description styling */
-.interval-description {
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark */
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 320px;
-    margin: 20px auto;
-    border: 1px solid #00A1D6; /* Botswana blue */
-    font-family: Arial, sans-serif;
-    box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
-}
-
-.interval-description .mirtha-intro {
-    font-size: 1.0em;
-    color: #00A1D6;
-    text-align: center;
-    margin-bottom: 24px;
-    font-weight: normal;
-}
-
-.interval-description ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.interval-description li {
-    margin-bottom: 10px;
-    font-size: 1.0em;
-    line-height: 1.4;
-}
-
-.interval-description strong {
-    font-size: 1.0em;
-    font-weight: bold;
-    display: inline;
-    text-shadow: 0 0 2px rgba(255, 255, 255, 0.1);
-}
-
-.interval-description strong.mirtha {
-    color: #00FF00;
-}
-
-.interval-description strong.minit {
-    color: #800080;
-}
-
-.interval-description strong.huor {
-    color: #FF0000;
-}
-
-.interval-description .desc {
-    font-size: 1.0em;
-    color: #d0d0ff;
-    font-weight: normal;
-    font-family: Arial, sans-serif;
-    display: inline;
-}
-
-/* Button styling */
-button {
-    margin: 5px 0;
-    padding: 8px 16px;
-    font-size: 1.0em;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(0, 161, 214, 0.5);
-    border-radius: 10px;
-    color: #00A1D6;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 161, 214, 0.3);
-    transition: box-shadow 0.3s ease, background 0.3s ease;
-    display: block;
-    width: 100%;
-    max-width: 320px;
-    text-align: center;
-    font-weight: bold;
-}
-
-button:hover {
-    background: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 0 15px rgba(0, 161, 214, 0.5);
-}
-
-/* Donation box styling */
-.donation-box {
-    background: rgba(0, 0, 0, 0.6);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 320px;
-    margin: 20px auto;
-    border: 1px solid #00A1D6;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
-    position: relative;
-}
-
-.donation-box .crypto-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-}
-
-.donation-box .crypto-card {
-    background: none;
+  }
+  
+  #clockCanvas {
+    width: 400px;
+    height: 400px;
+  }
+  
+  .mirtha-ring, .minit-ring, .hour-ring {
+    animation: pulse 3.2727s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+  }
+  
+  .info-container {
+    flex: 1;
+    text-align: right;
+  }
+  
+  h1 {
+    font-size: 2.5em;
+    text-shadow: 0 0 10px #00ff00;
+  }
+  
+  .mirtha { color: #00ff00; }
+  .minit { color: #800080; }
+  .hour { color: #ff0000; }
+  
+  button {
+    background: #00ff00;
     border: none;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0;
-    width: 90%;
-    transition: transform 0.3s ease;
+    padding: 10px 20px;
+    margin: 10px 0;
     cursor: pointer;
-    position: relative;
-}
-
-.donation-box .crypto-card:hover {
-    transform: scale(1.02);
-}
-
-.donation-box .crypto-card:hover .crypto-qr {
-    box-shadow: 0 0 12px rgba(0, 161, 214, 0.5);
-}
-
-.donation-box .crypto-card:active {
-    transform: scale(0.98);
-}
-
-.donation-box .crypto-card:active .crypto-qr {
-    box-shadow: 0 0 15px rgba(0, 161, 214, 0.8);
-}
-
-.donation-box .crypto-header {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 6px;
-    justify-content: center;
-}
-
-.donation-box .crypto-icon {
-    width: 18px;
-    height: 18px;
-    display: block;
-    object-fit: contain;
-}
-
-.donation-box .crypto-name {
-    font-size: 0.9em;
-    font-weight: bold;
-}
-
-.donation-box .crypto-name.bitcoin {
-    color: #F7931A;
-}
-
-.donation-box .crypto-name.solana {
-    background: linear-gradient(90deg, #9945FF, #14F195);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-.donation-box .crypto-name.ethereum {
-    color: #627EEA;
-}
-
-.donation-box .crypto-address {
-    display: block;
-    font-size: 0.8em;
-    color: #d0d0ff;
-    font-family: monospace;
-    overflow-wrap: break-word;
-    max-width: 100%;
-    text-align: center;
-    margin-bottom: 8px;
-}
-
-.donation-box .crypto-qr {
-    display: block;
-    width: 200px;
-    height: 200px;
-    margin: 8px auto 0;
-    border: 1px solid #00A1D6;
-    border-radius: 4px;
-    box-shadow: 0 0 5px rgba(0, 161, 214, 0.2);
-    transition: box-shadow 0.3s ease;
-}
-
-.donation-box .copy-tooltip {
-    position: absolute;
-    top: -20px;
-    right: 0;
-    background: rgba(0, 161, 214, 0.8);
-    color: #fff;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.8em;
-    opacity: 0;
-    animation: fadeTooltip 1s ease-in-out;
-}
-
-/* Stripe button styling */
-.stripe-container {
-    margin-top: 10px;
-}
-
-.stripe-button {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    width: 100%;
-    padding: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-    font-family: Arial, sans-serif;
-    font-size: 1.0em;
-    line-height: 1.4;
-    position: relative;
-    -webkit-tap-highlight-color: transparent;
-    justify-content: center;
-}
-
-.stripe-button:hover {
-    background: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 0 15px rgba(0, 161, 214, 0.5);
-}
-
-.stripe-button:active {
-    transform: scale(0.95);
-    box-shadow: 0 0 20px rgba(0, 161, 214, 0.8);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-.stripe-icon {
-    width: 18px;
-    height: 18px;
-    display: block;
-    object-fit: contain;
-}
-
-.donation-box .crypto-name.stripe {
-    color: #635BFF;
-    font-weight: bold;
-}
-
-/* Media query for larger screens */
-@media (min-width: 601px) {
-    .donation-box .crypto-container {
-        gap: 20px;
-    }
-    .donation-box .crypto-card {
-        width: auto;
-        max-width: 320px;
-    }
-    .donation-box .crypto-qr {
-        width: 140px;
-        height: 140px;
-        margin: 4px auto 0;
-    }
-    .donation-box .crypto-address {
-        font-size: 0.8em;
-    }
-}
-
-/* Media query for mobile screens */
-@media (max-width: 600px) {
-    .donation-box .crypto-address {
-        font-size: 0.7em;
-    }
-}
-
-/* Footer styling */
-footer {
-    text-align: center;
-    padding: 8px;
-    font-size: 0.8em;
-    color: #a0a0ff;
-    width: 100%;
-    margin-top: auto;
-}
-
-footer p {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    position: relative;
-    display: inline-block;
-    cursor: default;
-}
-
-footer p:hover .copyright-tooltip {
-    visibility: visible;
-    opacity: 1;
-}
-
-.copyright-tooltip {
-    visibility: hidden;
-    background: rgba(0, 161, 214, 0.8);
-    color: #fff;
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 4px;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.8em;
-    opacity: 0;
-    transition: opacity 0.3s;
-    white-space: nowrap;
-    box-shadow: 0 0 5px rgba(0, 161, 214, 0.3);
-}
-
-.copyright-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: rgba(0, 161, 214, 0.8) transparent transparent transparent;
-}
-
-@keyframes fadeTooltip {
-    0%, 100% { opacity: 0; transform: translateY(5px); }
-    20%, 80% { opacity: 1; transform: translateY(0); }
-}
+    border-radius: 5px;
+    font-family: 'Ghibli', sans-serif;
+    text-shadow: 0 0 5px #000;
+  }
+  
+  button:hover {
+    background: #00cc00;
+  }
