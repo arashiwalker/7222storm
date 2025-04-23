@@ -64,7 +64,7 @@
         </div>
     </div>
     <footer>
-        <p>© 2025 <a href="https://7222clock.com">7222clock.com</a> <span class="copyright-tooltip">All Rights Reserved. Unauthorized use prohibited.</span></p>
+        <p>© 2025 7222clock.com <span class="copyright-tooltip">All Rights Reserved. Unauthorized use prohibited.</span></p>
     </footer>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="clock.js"></script>
@@ -122,7 +122,8 @@
                     const session = await response.json();
                     console.log('MirthaNode: Checkout session received:', session);
                     if (session.id) {
-                        // Mark checkout as initiated to prevent re-initiation
+                        // Store the session ID and mark checkout as initiated
+                        sessionStorage.setItem('checkoutSessionId', session.id);
                         sessionStorage.setItem('checkoutInitiated', 'true');
                         console.log('MirthaNode: Redirecting to Stripe Checkout...');
                         const result = await stripe.redirectToCheckout({ sessionId: session.id });
@@ -130,8 +131,9 @@
                             console.error('MirthaNode: Stripe redirect error:', result.error.message);
                             stripeErrorMessage.textContent = `Stripe error: ${result.error.message}`;
                             stripeErrorMessage.style.display = 'block';
-                            // Clear the flag if the redirect fails
+                            // Clear the flags if the redirect fails
                             sessionStorage.removeItem('checkoutInitiated');
+                            sessionStorage.removeItem('checkoutSessionId');
                         }
                     } else {
                         console.error('MirthaNode: No session ID returned:', session);
@@ -152,9 +154,29 @@
             console.error('MirthaNode: Stripe button not found!');
         }
 
-        // Clear the checkout flag when the page loads to allow a new checkout
+        // Check for a cancel action when the page loads
         window.addEventListener('load', () => {
+            const sessionId = sessionStorage.getItem('checkoutSessionId');
+            const checkoutInitiated = sessionStorage.getItem('checkoutInitiated');
+            if (sessionId && checkoutInitiated) {
+                // Verify the session status
+                fetch(`/test-session/${sessionId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.payment_status !== 'paid') {
+                            // If the payment wasn't completed, redirect to cancel.html
+                            window.location.href = 'https://7222clock.com/cancel.html';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error verifying session status:', error);
+                        // On error, redirect to cancel.html as a fallback
+                        window.location.href = 'https://7222clock.com/cancel.html';
+                    });
+            }
+            // Clear the flags to allow a new checkout
             sessionStorage.removeItem('checkoutInitiated');
+            sessionStorage.removeItem('checkoutSessionId');
         });
     </script>
 </body>
