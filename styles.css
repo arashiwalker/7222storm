@@ -1,228 +1,228 @@
 body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #1a1a1a;
-  color: #fff;
-  overflow-x: hidden;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #1a1a1a;
+    color: #fff;
+    overflow-x: hidden;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .main-content {
-  display: flex;
-  flex: 1;
-  padding: 20px;
-  justify-content: space-between;
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    justify-content: space-between;
 }
 
 .clock-section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .clock-container {
-  position: relative;
-  width: 400px;
-  height: 400px;
+    position: relative;
+    width: 400px;
+    height: 400px;
 }
 
 #clockCanvas {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .info-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
 }
 
 .interval-description {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .mirtha-intro {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-  color: #00ffcc;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #00ffcc;
 }
 
 ul {
-  list-style: none;
-  padding: 0;
+    list-style: none;
+    padding: 0;
 }
 
 li {
-  margin: 10px 0;
-  font-size: 1.1em;
+    margin: 10px 0;
+    font-size: 1.1em;
 }
 
 .mirtha {
-  color: #ff00ff;
+    color: #ff00ff;
 }
 
 .minit {
-  color: #00ffcc;
+    color: #00ffcc;
 }
 
 .huor {
-  color: #ffcc00;
+    color: #ffcc00;
 }
 
 .desc {
-  color: #888;
-  font-size: 0.9em;
+    color: #888;
+    font-size: 0.9em;
 }
 
 #toggleSound {
-  background: #333;
-  border: none;
-  color: #fff;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 1em;
-  border-radius: 5px;
-  transition: background 0.3s;
+    background: #333;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
 
 #toggleSound:hover {
-  background: #555;
+    background: #555;
 }
 
 .donation-box {
-  background: #222;
-  padding: 20px;
-  border-radius: 10px;
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .crypto-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
 }
 
 .crypto-card, .stripe-card {
-  background: #333;
-  border-radius: 10px;
-  padding: 15px;
-  width: 150px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.3s;
+    background: #333;
+    border-radius: 10px;
+    padding: 15px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
 }
 
 .crypto-card:hover, .stripe-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
 .crypto-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
 .crypto-icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 }
 
 .crypto-name {
-  font-size: 1.1em;
+    font-size: 1.1em;
 }
 
 .bitcoin { color: #f7931a; }
 .solana { color: #00ffcc; }
 .ethereum { color: #627eea; }
 .stripe { 
-  color: #fff; 
-  background: #635BFF; /* Stripe blue */
-  padding: 5px 10px;
-  border-radius: 5px;
+    color: #fff; 
+    background: #635BFF; /* Stripe blue */
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 .crypto-address {
-  font-size: 0.8em;
-  word-break: break-all;
-  color: #888;
-  display: block;
-  margin-bottom: 10px;
+    font-size: 0.8em;
+    word-break: break-all;
+    color: #888;
+    display: block;
+    margin-bottom: 10px;
 }
 
 .crypto-qr {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto;
-  display: block;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    display: block;
 }
 
 .stripe-container {
-  text-align: center;
-  margin-top: 20px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .stripe-button {
-  background: #635BFF;
-  border: none;
-  color: #fff;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 1em;
-  border-radius: 5px;
-  transition: background 0.3s;
+    background: #635BFF;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
 
 .stripe-button:hover {
-  background: #5469d4;
+    background: #5469d4;
 }
 
 .copy-tooltip {
-  position: absolute;
-  background: #00ffcc;
-  color: #000;
-  padding: 5px;
-  border-radius: 5px;
-  font-size: 0.8em;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
+    position: absolute;
+    background: #00ffcc;
+    color: #000;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 footer {
-  text-align: center;
-  padding: 10px;
-  background: #111;
+    text-align: center;
+    padding: 10px;
+    background: #111;
 }
 
 .copyright-tooltip {
-  font-size: 0.8em;
-  color: #888;
+    font-size: 0.8em;
+    color: #888;
 }
 
 @media (max-width: 768px) {
-  .main-content {
-      flex-direction: column;
-      align-items: center;
-  }
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
 
-  .info-section {
-      padding-left: 0;
-      margin-top: 20px;
-  }
+    .info-section {
+        padding-left: 0;
+        margin-top: 20px;
+    }
 
-  .clock-container {
-      width: 300px;
-      height: 300px;
-  }
+    .clock-container {
+        width: 300px;
+        height: 300px;
+    }
 }
