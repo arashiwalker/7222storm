@@ -1,228 +1,385 @@
-body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #1a1a1a;
-    color: #fff;
-    overflow-x: hidden;
+/* General page styling */
+body, html {
+  margin: 0;
+  padding: 20px;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, #181818;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
 }
 
+/* Two-column layout */
 .main-content {
-    display: flex;
-    flex: 1;
-    padding: 20px;
-    justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
 }
 
-.clock-section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.clock-section, .info-section {
+  flex: 1;
+  min-width: 300px;
 }
 
+/* Clock styling */
 .clock-container {
-    position: relative;
-    width: 400px;
-    height: 400px;
+  margin: 20px 0;
 }
 
-#clockCanvas {
-    width: 100%;
-    height: 100%;
+canvas {
+  border: 5px solid #00A1D6; /* Botswana blue */
+  border-radius: 50%;
+  background-color: #282828;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 0 20px rgba(0, 161, 214, 0.5); /* Glowing effect */
 }
 
-.info-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 20px;
-}
-
+/* Interval description styling */
 .interval-description {
-    margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 320px;
+  margin: 20px auto;
+  border: 1px solid #00A1D6; /* Botswana blue */
+  font-family: Arial, sans-serif;
+  box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
 }
 
-.mirtha-intro {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: #00ffcc;
+.interval-description .mirtha-intro {
+  font-size: 1.0em;
+  color: #00A1D6;
+  text-align: center;
+  margin-bottom: 24px;
+  font-weight: normal;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
+.interval-description ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-li {
-    margin: 10px 0;
-    font-size: 1.1em;
+.interval-description li {
+  margin-bottom: 10px;
+  font-size: 1.0em;
+  line-height: 1.4;
 }
 
-.mirtha {
-    color: #ff00ff;
+.interval-description strong {
+  font-size: 1.0em;
+  font-weight: bold;
+  display: inline;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
-.minit {
-    color: #00ffcc;
+.interval-description strong.mirtha {
+  color: #00FF00;
 }
 
-.huor {
-    color: #ffcc00;
+.interval-description strong.minit {
+  color: #800080;
 }
 
-.desc {
-    color: #888;
-    font-size: 0.9em;
+.interval-description strong.huor {
+  color: #FF0000;
 }
 
-#toggleSound {
-    background: #333;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 1em;
-    border-radius: 5px;
-    transition: background 0.3s;
+.interval-description .desc {
+  font-size: 1.0em;
+  color: #d0d0ff;
+  font-weight: normal;
+  font-family: Arial, sans-serif;
+  display: inline;
 }
 
-#toggleSound:hover {
-    background: #555;
+/* Button styling */
+button {
+  margin: 5px 0;
+  padding: 8px 16px;
+  font-size: 1.0em;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 161, 214, 0.5);
+  border-radius: 10px;
+  color: #00A1D6;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 161, 214, 0.3);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  font-weight: bold;
 }
 
+button:hover {
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 15px rgba(0, 161, 214, 0.5);
+}
+
+/* Donation box styling */
 .donation-box {
-    background: #222;
-    padding: 20px;
-    border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 320px;
+  margin: 20px auto;
+  border: 1px solid #00A1D6;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
+  position: relative;
 }
 
-.crypto-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
+.donation-box .crypto-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
 }
 
-.crypto-card, .stripe-card {
-    background: #333;
-    border-radius: 10px;
-    padding: 15px;
-    width: 150px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.3s;
+.donation-box .crypto-card {
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  width: 90%;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  position: relative;
 }
 
-.crypto-card:hover, .stripe-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+.donation-box .crypto-card:hover {
+  transform: scale(1.02);
 }
 
-.crypto-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
+.donation-box .crypto-card:hover .crypto-qr {
+  box-shadow: 0 0 12px rgba(0, 161, 214, 0.5);
 }
 
-.crypto-icon {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
+.donation-box .crypto-card:active {
+  transform: scale(0.98);
 }
 
-.crypto-name {
-    font-size: 1.1em;
+.donation-box .crypto-card:active .crypto-qr {
+  box-shadow: 0 0 15px rgba(0, 161, 214, 0.8);
 }
 
-.bitcoin { color: #f7931a; }
-.solana { color: #00ffcc; }
-.ethereum { color: #627eea; }
-.stripe { 
-    color: #fff; 
-    background: #635BFF; /* Stripe blue */
-    padding: 5px 10px;
-    border-radius: 5px;
+.donation-box .crypto-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  justify-content: center;
 }
 
-.crypto-address {
-    font-size: 0.8em;
-    word-break: break-all;
-    color: #888;
-    display: block;
-    margin-bottom: 10px;
+.donation-box .crypto-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
 }
 
-.crypto-qr {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
-    display: block;
+.donation-box .crypto-name {
+  font-size: 0.9em;
+  font-weight: bold;
 }
 
+.donation-box .crypto-name.bitcoin {
+  color: #F7931A;
+}
+
+.donation-box .crypto-name.solana {
+  background: linear-gradient(90deg, #9945FF, #14F195);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.donation-box .crypto-name.ethereum {
+  color: #627EEA;
+}
+
+.donation-box .crypto-address {
+  display: block;
+  font-size: 0.8em;
+  color: #d0d0ff;
+  font-family: monospace;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.donation-box .crypto-qr {
+  display: block;
+  width: 200px;
+  height: 200px;
+  margin: 8px auto 0;
+  border: 1px solid #00A1D6;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 161, 214, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.donation-box .copy-tooltip {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  background: rgba(0, 161, 214, 0.8);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  opacity: 0;
+  animation: fadeTooltip 1s ease-in-out;
+}
+
+/* Stripe button styling */
 .stripe-container {
-    text-align: center;
-    margin-top: 20px;
+  margin-top: 10px;
 }
 
 .stripe-button {
-    background: #635BFF;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 1em;
-    border-radius: 5px;
-    transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  font-family: Arial, sans-serif;
+  font-size: 1.0em;
+  line-height: 1.4;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  justify-content: center;
 }
 
 .stripe-button:hover {
-    background: #5469d4;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 15px rgba(0, 161, 214, 0.5);
 }
 
-.copy-tooltip {
-    position: absolute;
-    background: #00ffcc;
-    color: #000;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 0.8em;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
+.stripe-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 20px rgba(0, 161, 214, 0.8);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
+.stripe-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+}
+
+.donation-box .crypto-name.stripe {
+  color: #635BFF;
+  font-weight: bold;
+}
+
+/* Media query for larger screens */
+@media (min-width: 601px) {
+  .donation-box .crypto-container {
+      gap: 20px;
+  }
+  .donation-box .crypto-card {
+      width: auto;
+      max-width: 320px;
+  }
+  .donation-box .crypto-qr {
+      width: 140px;
+      height: 140px;
+      margin: 4px auto 0;
+  }
+  .donation-box .crypto-address {
+      font-size: 0.8em;
+  }
+}
+
+/* Media query for mobile screens */
+@media (max-width: 600px) {
+  .donation-box .crypto-address {
+      font-size: 0.7em;
+  }
+}
+
+/* Footer styling */
 footer {
-    text-align: center;
-    padding: 10px;
-    background: #111;
+  text-align: center;
+  padding: 8px;
+  font-size: 0.8em;
+  color: #a0a0ff;
+  width: 100%;
+  margin-top: auto;
+}
+
+footer p {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  position: relative;
+  display: inline-block;
+  cursor: default;
+}
+
+footer p:hover .copyright-tooltip {
+  visibility: visible;
+  opacity: 1;
 }
 
 .copyright-tooltip {
-    font-size: 0.8em;
-    color: #888;
+  visibility: hidden;
+  background: rgba(0, 161, 214, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8em;
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+  box-shadow: 0 0 5px rgba(0, 161, 214, 0.3);
 }
 
-@media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-        align-items: center;
-    }
+.copyright-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 161, 214, 0.8) transparent transparent transparent;
+}
 
-    .info-section {
-        padding-left: 0;
-        margin-top: 20px;
-    }
-
-    .clock-container {
-        width: 300px;
-        height: 300px;
-    }
+@keyframes fadeTooltip {
+  0%, 100% { opacity: 0; transform: translateY(5px); }
+  20%, 80% { opacity: 1; transform: translateY(0); }
 }
