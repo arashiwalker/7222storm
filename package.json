@@ -1,14 +1,14 @@
 {
-    "name": "7222clock",
-    "version": "2.0.0",
-    "description": "A cosmic clock based on the 72/22 time system",
-    "main": "server.js",
-    "scripts": {
+  "name": "mirthanode",
+  "version": "1.0.0",
+  "description": "72/22 Clock with Stripe and Crypto Donations",
+  "main": "server.js",
+  "scripts": {
       "start": "node server.js"
-    },
-    "dependencies": {
-      "express": "^4.18.2",
+  },
+  "dependencies": {
+      "express": "^4.17.1",
       "stripe": "^14.5.0",
-      "dotenv": "^16.3.1"
-    }
+      "cors": "^2.8.5"
   }
+}
