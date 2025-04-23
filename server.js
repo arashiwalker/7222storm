@@ -11,7 +11,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type']
 }));
 app.use(express.json());
-app.use(express.static('.'));
+app.use(express.static('public'));
 
 // Log server start
 console.log('MirthaNode: STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY ? 'Loaded' : 'Not loaded');
