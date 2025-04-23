@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>72/22 Clock</title>
+    <title>72/22 Clock - MirthaNode</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -64,7 +64,7 @@
         </div>
     </div>
     <footer>
-        <p>© 2025 7222clock.com <span class="copyright-tooltip">All Rights Reserved. Unauthorized use prohibited.</span></p>
+        <p>© 2025 <a href="https://7222clock.com">7222clock.com</a> <span class="copyright-tooltip">All Rights Reserved. Unauthorized use prohibited.</span></p>
     </footer>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="clock.js"></script>
@@ -91,6 +91,12 @@
             console.log('MirthaNode: Stripe button found');
             stripeButton.addEventListener('click', async () => {
                 console.log('MirthaNode: Stripe button clicked');
+                // Check if we've already initiated a checkout session
+                if (sessionStorage.getItem('checkoutInitiated')) {
+                    console.log('MirthaNode: Checkout already initiated, skipping...');
+                    return;
+                }
+
                 try {
                     // Check if third-party cookies are blocked
                     const testCookie = await fetch('https://js.stripe.com/v3/', { method: 'HEAD' }).catch(() => null);
@@ -116,12 +122,16 @@
                     const session = await response.json();
                     console.log('MirthaNode: Checkout session received:', session);
                     if (session.id) {
+                        // Mark checkout as initiated to prevent re-initiation
+                        sessionStorage.setItem('checkoutInitiated', 'true');
                         console.log('MirthaNode: Redirecting to Stripe Checkout...');
                         const result = await stripe.redirectToCheckout({ sessionId: session.id });
                         if (result.error) {
                             console.error('MirthaNode: Stripe redirect error:', result.error.message);
                             stripeErrorMessage.textContent = `Stripe error: ${result.error.message}`;
                             stripeErrorMessage.style.display = 'block';
+                            // Clear the flag if the redirect fails
+                            sessionStorage.removeItem('checkoutInitiated');
                         }
                     } else {
                         console.error('MirthaNode: No session ID returned:', session);
@@ -141,6 +151,11 @@
         } else {
             console.error('MirthaNode: Stripe button not found!');
         }
+
+        // Clear the checkout flag when the page loads to allow a new checkout
+        window.addEventListener('load', () => {
+            sessionStorage.removeItem('checkoutInitiated');
+        });
     </script>
 </body>
 </html>
