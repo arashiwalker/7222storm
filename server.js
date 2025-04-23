@@ -19,6 +19,7 @@ console.log('MirthaNode: STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY ? 'L
 // Stripe Checkout Session Endpoint
 app.post('/create-checkout-session', async (req, res) => {
     console.log('MirthaNode: Received request to /create-checkout-session');
+    console.log('MirthaNode: Request body:', req.body);
     try {
         console.log('MirthaNode: Creating Stripe Checkout session with amount:', req.body.amount);
         const session = await stripe.checkout.sessions.create({
@@ -33,9 +34,10 @@ app.post('/create-checkout-session', async (req, res) => {
             }],
             mode: 'payment',
             success_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/success',
-            cancel_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/cancel'
+            cancel_url: 'https://morning-everglades-53594-d80c2e04b3e6.herokuapp.com/cancel',
+            expires_at: Math.floor(Date.now() / 1000) + (60 * 30) // Expire in 30 minutes
         });
-        console.log('MirthaNode: Session created:', session.id);
+        console.log('MirthaNode: Session created:', session.id, 'Expires at:', new Date(session.expires_at * 1000));
         res.status(200).json({ id: session.id });
     } catch (error) {
         console.error('MirthaNode: Stripe error:', error.message, error.stack);
