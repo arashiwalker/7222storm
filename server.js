@@ -6,6 +6,7 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.post('/create-checkout-session', async (req, res) => {
+  console.log('MirthaNode: Creating Stripe Checkout session...');
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -23,8 +24,14 @@ app.post('/create-checkout-session', async (req, res) => {
     });
     res.json({ id: session.id });
   } catch (error) {
+    console.log('MirthaNode: Stripe error:', error.message);
     res.status(500).json({ error: error.message });
   }
+});
+
+// Fallback route to serve index.html for unmatched routes
+app.get('*', (req, res) => {
+  res.sendFile('index.html', { root: 'public' });
 });
 
 const port = process.env.PORT || 3000;
