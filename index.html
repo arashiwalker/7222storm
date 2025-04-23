@@ -87,20 +87,25 @@
             stripeButton.addEventListener('click', async () => {
                 console.log('MirthaNode: Stripe button clicked');
                 try {
-                    console.log('MirthaNode: Fetching checkout session...');
+                    console.log('MirthaNode: Sending fetch to /create-checkout-session...');
                     const response = await fetch('/create-checkout-session', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
                         credentials: 'same-origin',
                         body: JSON.stringify({ amount: 500 }) // $5 donation
                     });
                     console.log('MirthaNode: Fetch response:', response.status, response.statusText);
                     if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
+                        const errorText = await response.text();
+                        throw new Error(`HTTP error! Status: ${response.status} ${response.statusText} - ${errorText}`);
                     }
                     const session = await response.json();
-                    console.log('MirthaNode: Checkout session:', session);
+                    console.log('MirthaNode: Checkout session received:', session);
                     if (session.id) {
+                        console.log('MirthaNode: Redirecting to Stripe Checkout...');
                         const result = await stripe.redirectToCheckout({ sessionId: session.id });
                         if (result.error) {
                             console.error('MirthaNode: Stripe redirect error:', result.error.message);
