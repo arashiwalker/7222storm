@@ -26,6 +26,14 @@
                 </div>
                 <div class="donation-box">
                     <div class="crypto-container">
+                        <div class="stripe-container">
+                            <button id="stripeCheckoutButton" class="stripe-button">
+                                <strong class="crypto-name stripe">Pay with Stripe</strong>
+                            </button>
+                            <p id="stripeErrorMessage" style="color: red; display: none; margin-top: 10px;">
+                                Stripe payments require third-party cookies. Please enable them in your browser settings and try again.
+                            </p>
+                        </div>
                         <div class="crypto-card" onclick="copyAddress(this, 'bc1qhm73zj7hyjkz3jt0l6y6etaypu6ghcr7tkn57f')">
                             <div class="crypto-header">
                                 <img src="images/btc-logo.png" alt="Bitcoin" class="crypto-icon">
@@ -50,14 +58,6 @@
                             <span class="crypto-address">0x49509058764F40f9A4B7183b466B8d5c4ae2aa8F</span>
                             <img src="images/eth QR.jpeg" alt="Ethereum QR Code" class="crypto-qr">
                         </div>
-                    </div>
-                    <div class="stripe-container">
-                        <button id="stripeCheckoutButton" class="stripe-button">
-                            <strong class="crypto-name stripe">Donate with Stripe</strong>
-                        </button>
-                        <p id="stripeErrorMessage" style="color: red; display: none; margin-top: 10px;">
-                            Stripe payments require third-party cookies. Please enable them in your browser settings and try again.
-                        </p>
                     </div>
                 </div>
             </div>
