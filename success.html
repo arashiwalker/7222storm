@@ -8,18 +8,18 @@
 </head>
 <body>
     <div class="container">
-        <div class="main-content">
-            <div class="info-section">
-                <div class="interval-description">
-                    <h2>Thank You for Your Donation!</h2>
-                    <p>Your support helps keep the 72/22 Clock ticking. Explore more at <a href="index.html">7222clock.com</a>.</p>
-                    <button onclick="window.location.href='index.html'">Back to Clock</button>
-                </div>
-            </div>
-        </div>
+        <h1>Thank You!</h1>
+        <p>Your donation was successful.</p>
+        <p id="sessionId"></p>
+        <a href="/">Back to 72/22 Clock</a>
     </div>
-    <footer>
-        <p>© 2025 7222clock.com <span class="copyright-tooltip">All Rights Reserved. Unauthorized use prohibited.</span></p>
-    </footer>
+    <script>
+        // Get the session ID from the URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        if (sessionId) {
+            document.getElementById('sessionId').textContent = `Transaction ID: ${sessionId}`;
+        }
+    </script>
 </body>
 </html>
