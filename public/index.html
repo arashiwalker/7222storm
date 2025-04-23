@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>72/22 Clock</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -43,7 +44,7 @@
         body: JSON.stringify({ amount: 500 }) // $5.00
       });
       const session = await response.json();
-      const stripe = Stripe('pk_test_51RFpQhKPIr5mBIf3A0LICBUWQjj0zTVdKHmMp7Wq6DuzGZnv5vtzgVotX6Jvas9PTlqgdaoGjryGnml6sq2AtbFe00HoUxAN5R');
+      const stripe = Stripe('pk_test_your_publishable_key');
       stripe.redirectToCheckout({ sessionId: session.id });
     });
   </script>
