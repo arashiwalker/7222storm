@@ -12,6 +12,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type']
 }));
 app.use(express.json());
+
 // Log all requests
 app.use((req, res, next) => {
     console.log(`MirthaNode: Request received: ${req.method} ${req.url}`);
@@ -95,6 +96,13 @@ app.get('/test-session/:sessionId', async (req, res) => {
         console.error('MirthaNode: Retrieve session error:', error.message, error.stack);
         res.status(500).json({ error: error.message });
     }
+});
+
+// Time synchronization endpoint
+app.get('/time', (req, res) => {
+    const serverTime = Date.now();
+    console.log(`MirthaNode: Serving server time: ${serverTime}`);
+    res.json({ time: serverTime });
 });
 
 // Start Server

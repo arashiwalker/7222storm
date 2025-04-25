@@ -1,9 +1,6 @@
 const canvas = document.getElementById('clockCanvas');
-const ctx = canvas ? canvas.getContext('2d') : null;
+const ctx = canvas.getContext('2d');
 const toggleSoundBtn = document.getElementById('toggleSound');
-if (!canvas) {
-    console.error('MirthaNode: Canvas element not found');
-}
 if (!ctx) {
     console.error('MirthaNode: Failed to get 2D context for canvas');
 }
@@ -150,7 +147,6 @@ toggleSoundBtn.addEventListener('click', () => {
 
 let clockRadius, centerX, centerY;
 function resizeCanvas() {
-    if (!canvas) return;
     const maxSize = 600; // Cap canvas size to reduce rendering load
     canvas.width = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9, maxSize);
     canvas.height = canvas.width;
@@ -173,7 +169,32 @@ const secondsInterval = (1000 * 72) / 22;
 const minutesInterval = secondsInterval * totalMirthas;
 const huorsInterval = minutesInterval * totalMinits;
 
-const startTime = new Date("2020-02-01T23:00:00").getTime();
+// Use UTC start time
+const startTime = Date.parse("2020-02-01T23:00:00Z"); // UTC timestamp
+
+// Server synchronization
+let serverOffset = 0; // Difference between server time and local time in milliseconds
+
+async function syncWithServer() {
+    try {
+        const response = await fetch('/time');
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const data = await response.json();
+        const serverTime = data.time;
+        const localTime = Date.now();
+        serverOffset = serverTime - localTime;
+        console.log('MirthaNode: Synced with server, offset:', serverOffset);
+    } catch (error) {
+        console.error('MirthaNode: Error syncing with server:', error);
+        // Keep the previous offset if sync fails
+    }
+}
+
+// Initial sync on load
+syncWithServer();
+
+// Resync every 10 seconds to correct for clock drift
+setInterval(syncWithServer, 10000);
 
 let lastMirthaTick = -1;
 let lastMinitTick = -1;
@@ -285,7 +306,6 @@ function drawTicks() {
 }
 
 function drawHand(rotation, length, color, lineWidth) {
-    console.log('MirthaNode: Drawing hand, rotation:', rotation, 'length:', length, 'color:', color);
     const radians = (rotation - 90) * (Math.PI / 180);
     const xEnd = centerX + length * Math.cos(radians);
     const yEnd = centerY + length * Math.sin(radians);
@@ -299,7 +319,6 @@ function drawHand(rotation, length, color, lineWidth) {
 }
 
 function drawLabel(label, x, y, color) {
-    console.log('MirthaNode: Drawing label:', label, 'at:', x, y, 'color:', color);
     const fontSize = Math.max(12, canvas.width / 25);
     ctx.fillStyle = color;
     ctx.font = `${fontSize}px Arial`;
@@ -310,9 +329,9 @@ function drawLabel(label, x, y, color) {
 
 function drawClockHands() {
     console.log('MirthaNode: Drawing clock hands');
-    const now = Date.now();
-    const elapsedTime = now - startTime;
-    console.log('MirthaNode: Current time:', now, 'Elapsed time:', elapsedTime);
+    const localNow = Date.now();
+    const synchronizedNow = localNow + serverOffset;
+    const elapsedTime = synchronizedNow - startTime;
 
     const mirthaTick = Math.floor(elapsedTime / secondsInterval) % totalMirthas + 1;
     const minitTick = Math.floor(elapsedTime / minutesInterval) % totalMinits + 1;
@@ -411,7 +430,6 @@ function drawClock() {
         console.error('MirthaNode: No context available');
         return;
     }
-    console.log('MirthaNode: Drawing clock');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawClockFace();
     drawTicks();
@@ -421,19 +439,22 @@ function drawClock() {
 let isRunning = true;
 canvas.addEventListener('click', () => {
     isRunning = !isRunning;
-    console.log('MirthaNode:', isRunning ? 'Resuming clock' : 'Pausing clock');
+    console.log('MirthaNode:', isRunning ? 'Resuming animation' : 'Pausing animation');
     if (isRunning) {
-        clockInterval = setInterval(drawClock, 50); // Update every 50ms for smooth hands
-    } else {
-        clearInterval(clockInterval);
+        animateClock();
     }
 });
 
-let clockInterval;
+function animateClock() {
+    if (!isRunning) return;
+    drawClock();
+    requestAnimationFrame(animateClock);
+}
+
 try {
     console.log('MirthaNode: Initializing clock');
     drawClock();
-    clockInterval = setInterval(drawClock, 50); // Update every 50ms for smooth hands
+    requestAnimationFrame(animateClock);
 } catch (error) {
     console.error('MirthaNode: Error initializing clock:', error);
 }
