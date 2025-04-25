@@ -418,8 +418,25 @@ canvas.addEventListener('click', () => {
 
 function animateClock() {
     if (!isRunning) return;
-    drawClock();
-    requestAnimationFrame(animateClock);
+    const frameTime = 1000 / 60; // Target 60 FPS (~16.67ms per frame)
+    let lastTime = performance.now();
+    let accumulatedTime = 0;
+
+    function loop(currentTime) {
+        if (!isRunning) return;
+        const deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+        accumulatedTime += deltaTime;
+
+        while (accumulatedTime >= frameTime) {
+            drawClock();
+            accumulatedTime -= frameTime;
+        }
+
+        requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(loop);
 }
 
 try {
