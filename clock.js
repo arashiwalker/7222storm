@@ -168,7 +168,7 @@ const secondsInterval = (1000 * 72) / 22;
 const minutesInterval = secondsInterval * totalMirthas;
 const huorsInterval = minutesInterval * totalMinits;
 
-const startTime = new Date("2020-02-01T23:00:00Z").getTime();
+const startTime = new Date("2020-02-01T23:00:00").getTime();
 
 let lastMirthaTick = -1;
 let lastMinitTick = -1;
