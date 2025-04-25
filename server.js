@@ -100,9 +100,7 @@ app.get('/test-session/:sessionId', async (req, res) => {
 
 // Time synchronization endpoint
 app.get('/time', (req, res) => {
-    const serverTime = Date.now();
-    console.log(`MirthaNode: Serving server time: ${serverTime}`);
-    res.json({ time: serverTime });
+    res.json({ time: Date.now() });
 });
 
 // Start Server

@@ -169,16 +169,13 @@ const secondsInterval = (1000 * 72) / 22;
 const minutesInterval = secondsInterval * totalMirthas;
 const huorsInterval = minutesInterval * totalMinits;
 
-// Use UTC start time
-const startTime = Date.parse("2020-02-01T23:00:00Z"); // UTC timestamp
+const startTime = Date.parse("2020-02-01T23:00:00Z");
 
-// Server synchronization
-let serverOffset = 0; // Difference between server time and local time in milliseconds
+let serverOffset = 0;
 
 async function syncWithServer() {
     try {
         const response = await fetch('/time');
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const data = await response.json();
         const serverTime = data.time;
         const localTime = Date.now();
@@ -186,14 +183,13 @@ async function syncWithServer() {
         console.log('MirthaNode: Synced with server, offset:', serverOffset);
     } catch (error) {
         console.error('MirthaNode: Error syncing with server:', error);
-        // Keep the previous offset if sync fails
     }
 }
 
-// Initial sync on load
+// Initial sync
 syncWithServer();
 
-// Resync every 10 seconds to correct for clock drift
+// Resync every 10 seconds
 setInterval(syncWithServer, 10000);
 
 let lastMirthaTick = -1;
@@ -329,8 +325,7 @@ function drawLabel(label, x, y, color) {
 
 function drawClockHands() {
     console.log('MirthaNode: Drawing clock hands');
-    const localNow = Date.now();
-    const synchronizedNow = localNow + serverOffset;
+    const synchronizedNow = Date.now() + serverOffset;
     const elapsedTime = synchronizedNow - startTime;
 
     const mirthaTick = Math.floor(elapsedTime / secondsInterval) % totalMirthas + 1;
@@ -454,7 +449,7 @@ function animateClock() {
 try {
     console.log('MirthaNode: Initializing clock');
     drawClock();
-    requestAnimationFrame(animateClock);
+    animateClock();
 } catch (error) {
     console.error('MirthaNode: Error initializing clock:', error);
 }
