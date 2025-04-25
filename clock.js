@@ -312,6 +312,7 @@ function drawClockHands() {
     console.log('MirthaNode: Drawing clock hands');
     const now = Date.now();
     const elapsedTime = now - startTime;
+    console.log('MirthaNode: Current time:', now, 'Elapsed time:', elapsedTime);
 
     const mirthaTick = Math.floor(elapsedTime / secondsInterval) % totalMirthas + 1;
     const minitTick = Math.floor(elapsedTime / minutesInterval) % totalMinits + 1;
@@ -420,20 +421,19 @@ function drawClock() {
 let isRunning = true;
 canvas.addEventListener('click', () => {
     isRunning = !isRunning;
-    console.log('MirthaNode:', isRunning ? 'Resuming animation' : 'Pausing animation');
-    if (isRunning) animateClock();
+    console.log('MirthaNode:', isRunning ? 'Resuming clock' : 'Pausing clock');
+    if (isRunning) {
+        clockInterval = setInterval(drawClock, 50); // Update every 50ms for smooth hands
+    } else {
+        clearInterval(clockInterval);
+    }
 });
 
-function animateClock() {
-    if (!isRunning) return;
-    drawClock();
-    requestAnimationFrame(animateClock);
-}
-
+let clockInterval;
 try {
     console.log('MirthaNode: Initializing clock');
     drawClock();
-    animateClock();
+    clockInterval = setInterval(drawClock, 50); // Update every 50ms for smooth hands
 } catch (error) {
     console.error('MirthaNode: Error initializing clock:', error);
 }
