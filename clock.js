@@ -147,7 +147,8 @@ toggleSoundBtn.addEventListener('click', () => {
 
 let clockRadius, centerX, centerY;
 function resizeCanvas() {
-    canvas.width = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9);
+    const maxSize = 600; // Cap canvas size to reduce rendering load
+    canvas.width = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9, maxSize);
     canvas.height = canvas.width;
     centerX = canvas.width / 2;
     centerY = canvas.height / 2;
@@ -413,35 +414,26 @@ let isRunning = true;
 canvas.addEventListener('click', () => {
     isRunning = !isRunning;
     console.log('MirthaNode:', isRunning ? 'Resuming animation' : 'Pausing animation');
-    if (isRunning) animateClock();
+    if (isRunning) {
+        animateClock();
+    }
 });
 
 function animateClock() {
     if (!isRunning) return;
-    const frameTime = 1000 / 60; // Target 60 FPS (~16.67ms per frame)
-    let lastTime = performance.now();
-    let accumulatedTime = 0;
-
-    function loop(currentTime) {
-        if (!isRunning) return;
-        const deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-        accumulatedTime += deltaTime;
-
-        while (accumulatedTime >= frameTime) {
-            drawClock();
-            accumulatedTime -= frameTime;
-        }
-
-        requestAnimationFrame(loop);
-    }
-
-    requestAnimationFrame(loop);
+    drawClock();
+    requestAnimationFrame(animateClock);
 }
 
+let clockInterval;
 try {
     console.log('MirthaNode: Initializing clock');
     drawClock();
+    clockInterval = setInterval(() => {
+        if (isRunning) {
+            drawClock();
+        }
+    }, secondsInterval / 22); // Update ~every 149ms for smoother interpolation
     animateClock();
 } catch (error) {
     console.error('MirthaNode: Error initializing clock:', error);
