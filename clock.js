@@ -147,8 +147,7 @@ toggleSoundBtn.addEventListener('click', () => {
 
 let clockRadius, centerX, centerY;
 function resizeCanvas() {
-    const maxSize = 600; // Cap canvas size to reduce rendering load
-    canvas.width = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9, maxSize);
+    canvas.width = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9);
     canvas.height = canvas.width;
     centerX = canvas.width / 2;
     centerY = canvas.height / 2;
@@ -169,28 +168,7 @@ const secondsInterval = (1000 * 72) / 22;
 const minutesInterval = secondsInterval * totalMirthas;
 const huorsInterval = minutesInterval * totalMinits;
 
-const startTime = Date.parse("2020-02-01T23:00:00Z");
-
-let serverOffset = 0;
-
-async function syncWithServer() {
-    try {
-        const response = await fetch('/time');
-        const data = await response.json();
-        const serverTime = data.time;
-        const localTime = Date.now();
-        serverOffset = serverTime - localTime;
-        console.log('MirthaNode: Synced with server, offset:', serverOffset);
-    } catch (error) {
-        console.error('MirthaNode: Error syncing with server:', error);
-    }
-}
-
-// Initial sync
-syncWithServer();
-
-// Resync every 10 seconds
-setInterval(syncWithServer, 10000);
+const startTime = new Date("2020-02-01T23:00:00").getTime();
 
 let lastMirthaTick = -1;
 let lastMinitTick = -1;
@@ -325,8 +303,8 @@ function drawLabel(label, x, y, color) {
 
 function drawClockHands() {
     console.log('MirthaNode: Drawing clock hands');
-    const synchronizedNow = Date.now() + serverOffset;
-    const elapsedTime = synchronizedNow - startTime;
+    const now = Date.now();
+    const elapsedTime = now - startTime;
 
     const mirthaTick = Math.floor(elapsedTime / secondsInterval) % totalMirthas + 1;
     const minitTick = Math.floor(elapsedTime / minutesInterval) % totalMinits + 1;
@@ -435,9 +413,7 @@ let isRunning = true;
 canvas.addEventListener('click', () => {
     isRunning = !isRunning;
     console.log('MirthaNode:', isRunning ? 'Resuming animation' : 'Pausing animation');
-    if (isRunning) {
-        animateClock();
-    }
+    if (isRunning) animateClock();
 });
 
 function animateClock() {
