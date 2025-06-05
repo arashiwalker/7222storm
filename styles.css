@@ -65,7 +65,7 @@ canvas {
 .digital-clock {
   margin: 40px auto 20px auto;
   padding: 15px;
-  background: rgba(0, 0, 0, 0.6); /* Changed from #282828 to match info and donation sections */
+  background: rgba(0, 0, 0, 0.6);
   border: 5px solid #00A1D6;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 161, 214, 0.5);
@@ -85,7 +85,7 @@ canvas {
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 10px; /* Increased from 8px for more space between numbers and colons */
   padding: 5px;
 }
 
@@ -436,6 +436,7 @@ footer p:hover .copyright-tooltip {
   .flip-container {
     font-size: 1.7em;
     width: 160px;
+    gap: 7.7px; /* Scaled proportionally: 10px * (1.7em / 2.2em) ≈ 7.7px */
   }
   .mirtha, .minit, .huor {
     width: 41.25px;
