@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>72/22 Clock</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/jpeg" href="images/favicon7222.JPG">
 </head>
 <body>
     <div class="container">
@@ -13,28 +14,35 @@
                 <div class="clock-container">
                     <canvas id="clockCanvas"></canvas>
                 </div>
+                <div class="digital-clock">
+                    <div class="flip-container">
+                        <span class="mirtha" id="mirtha">00</span><span class="colon">:</span><span class="minit" id="minit">00</span><span class="colon">:</span><span class="huor" id="huor">00</span>
+                    </div>
+                </div>
             </div>
             <div class="info-section">
-                <div class="interval-description">
-                    <p class="mirtha-intro">72/22 Clock introduces the Mirtha. Replacement of the Second</p>
-                    <ul>
-                        <li><strong class="mirtha">MIRTHA</strong> <span class="desc">1 Mirtha = 72/22 || 3.27273seconds</span></li>
-                        <li><strong class="minit">MINIT</strong> <span class="desc">1 Minit = 22 Mirthas</span></li>
-                        <li><strong class="huor">HUOR</strong> <span class="desc">1 Huor = 50 Minits</span></li>
-                    </ul>
-                    <button id="toggleSound">🔊 Sound: On</button>
+                <div class="info-box">
+                    <div class="interval-description">
+                        <p class="mirtha-intro">72/22 Clock introduces the Mirtha. Replacement of the Second</p>
+                        <ul>
+                            <li><strong class="mirtha">MIRTHA</strong> <span class="desc">1 Mirtha = 72/22 || 3.27273seconds</span></li>
+                            <li><strong class="minit">MINIT</strong> <span class="desc">1 Minit = 22 Mirthas</span></li>
+                            <li><strong class="huor">HUOR</strong> <span class="desc">1 Huor = 50 Minits</span></li>
+                        </ul>
+                        <button id="toggleSound">🔊 Sound: On</button>
+                    </div>
+                </div>
+                <div class="payment-box">
+                    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+                    <stripe-buy-button
+                      buy-button-id="buy_btn_1RUluXKPIr5mBIf3UKzaKgeV"
+                      publishable-key="pk_live_51RFpQhKPIr5mBIf30u1030sWukrw4eqfd8jlMVrGQ5un6H9TL8O7Iz1lHa5s27AxZ4XInvJRblgd94yzAcv0idIk00R8vLeFAG"
+                    >
+                    </stripe-buy-button>
                 </div>
                 <div class="donation-box">
+                    <p class="donate-label">Donate</p>
                     <div class="crypto-container">
-                        <script async
-  src="https://js.stripe.com/v3/buy-button.js">
-</script>
-
-<stripe-buy-button
-  buy-button-id="buy_btn_1RUluXKPIr5mBIf3UKzaKgeV"
-  publishable-key="pk_live_51RFpQhKPIr5mBIf30u1030sWukrw4eqfd8jlMVrGQ5un6H9TL8O7Iz1lHa5s27AxZ4XInvJRblgd94yzAcv0idIk00R8vLeFAG"
->
-</stripe-buy-button>
                         <div class="crypto-card" onclick="copyAddress(this, 'bc1qhm73zj7hyjkz3jt0l6y6etaypu6ghcr7tkn57f')">
                             <div class="crypto-header">
                                 <img src="images/btc-logo.png" alt="Bitcoin" class="crypto-icon">
@@ -92,14 +100,12 @@
             console.log('MirthaNode: Stripe button found');
             stripeButton.addEventListener('click', async () => {
                 console.log('MirthaNode: Stripe button clicked');
-                // Check if we've already initiated a checkout session
                 if (sessionStorage.getItem('checkoutInitiated')) {
                     console.log('MirthaNode: Checkout already initiated, skipping...');
                     return;
                 }
 
                 try {
-                    // Check if third-party cookies are blocked
                     const testCookie = await fetch('https://js.stripe.com/v3/', { method: 'HEAD' }).catch(() => null);
                     if (!testCookie) {
                         throw new Error('Third-party cookies are blocked');
@@ -113,7 +119,7 @@
                             'Accept': 'application/json'
                         },
                         credentials: 'same-origin',
-                        body: JSON.stringify({ amount: 500 }) // $5 donation
+                        body: JSON.stringify({ amount: 500 })
                     });
                     console.log('MirthaNode: Fetch response:', response.status, response.statusText);
                     if (!response.ok) {
@@ -123,7 +129,6 @@
                     const session = await response.json();
                     console.log('MirthaNode: Checkout session received:', session);
                     if (session.id) {
-                        // Store the session ID and mark checkout as initiated
                         sessionStorage.setItem('checkoutSessionId', session.id);
                         sessionStorage.setItem('checkoutInitiated', 'true');
                         console.log('MirthaNode: Redirecting to Stripe Checkout...');
@@ -132,7 +137,6 @@
                             console.error('MirthaNode: Stripe redirect error:', result.error.message);
                             stripeErrorMessage.textContent = `Stripe error: ${result.error.message}`;
                             stripeErrorMessage.style.display = 'block';
-                            // Clear the flags if the redirect fails
                             sessionStorage.removeItem('checkoutInitiated');
                             sessionStorage.removeItem('checkoutSessionId');
                         }
@@ -155,27 +159,22 @@
             console.error('MirthaNode: Stripe button not found!');
         }
 
-        // Check for a cancel action when the page loads
         window.addEventListener('load', () => {
             const sessionId = sessionStorage.getItem('checkoutSessionId');
             const checkoutInitiated = sessionStorage.getItem('checkoutInitiated');
             if (sessionId && checkoutInitiated) {
-                // Verify the session status
                 fetch(`/test-session/${sessionId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.payment_status !== 'paid') {
-                            // If the payment wasn't completed, redirect to cancel.html
                             window.location.href = 'https://7222clock.com/cancel.html';
                         }
                     })
                     .catch(error => {
                         console.error('Error verifying session status:', error);
-                        // On error, redirect to cancel.html as a fallback
                         window.location.href = 'https://7222clock.com/cancel.html';
                     });
             }
-            // Clear the flags to allow a new checkout
             sessionStorage.removeItem('checkoutInitiated');
             sessionStorage.removeItem('checkoutSessionId');
         });

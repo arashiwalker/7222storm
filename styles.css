@@ -1,3 +1,8 @@
+/* Ensure box-sizing is applied globally */
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 /* General page styling */
 body, html {
   margin: 0;
@@ -10,6 +15,8 @@ body, html {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .container {
@@ -28,11 +35,12 @@ body, html {
   gap: 20px;
   width: 100%;
   max-width: 1200px;
+  padding-top: 10px;
 }
 
 .clock-section, .info-section {
   width: 100%;
-  max-width: 500px; /* Limit max width for better scaling */
+  max-width: 500px;
 }
 
 /* Clock styling */
@@ -40,30 +48,109 @@ body, html {
   margin: 20px auto;
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 canvas {
-  border: 5px solid #00A1D6; /* Botswana blue */
+  border: 5px solid #00A1D6;
   border-radius: 50%;
   background-color: #282828;
   width: 100%;
   max-width: 500px;
   height: auto;
   aspect-ratio: 1 / 1;
-  box-shadow: 0 0 20px rgba(0, 161, 214, 0.5); /* Glowing effect */
+  box-shadow: 0 0 20px rgba(0, 161, 214, 0.5);
 }
 
-/* Interval description styling */
-.interval-description {
-  background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark */
-  padding: 20px;
+/* Digital clock styling */
+.digital-clock {
+  margin: 40px auto 20px auto;
+  padding: 15px;
+  background: #282828;
+  border: 5px solid #00A1D6;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 161, 214, 0.5);
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.flip-container {
+  font-family: 'Inconsolata', monospace;
+  font-size: 2em;
+  display: flex;
+  width: 190px; /* 3 spans (50px) + 2 colons (10px) + 4 gaps (5px) = 190px */
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+}
+
+.mirtha, .minit, .huor {
+  display: inline-block;
+  width: 50px;
+  text-align: center;
+  position: relative;
+  transition: text-shadow 0.3s ease;
+}
+
+.colon {
+  display: inline-block;
+  width: 10px;
+  text-align: center;
+  color: #00A1D6; /* Botswana blue */
+}
+
+.mirtha {
+  color: #00FF00;
+}
+
+.minit {
+  color: #800080;
+}
+
+.huor {
+  color: #FF0000;
+}
+
+.flip {
+  animation: flip 0.3s ease-in-out;
+}
+
+@keyframes flip {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(-90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+.glow-mirtha {
+  text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
+}
+
+.glow-harmony {
+  text-shadow: 0 0 10px #00A1D6, 0 0 20px #00A1D6;
+}
+
+/* Info, Payment, and Donation sections */
+.info-box, .payment-box, .donation-box {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
   border-radius: 10px;
   text-align: center;
   max-width: 320px;
   margin: 20px auto;
-  border: 1px solid #00A1D6; /* Botswana blue */
+  border: 1px solid #00A1D6;
   font-family: Arial, sans-serif;
   box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
+}
+
+/* Interval description styling (inside info-box) */
+.interval-description {
+  text-align: center;
 }
 
 .interval-description .mirtha-intro {
@@ -138,17 +225,14 @@ button:hover {
 }
 
 /* Donation box styling */
-.donation-box {
-  background: rgba(0, 0, 0, 0.6);
-  padding: 15px;
-  border-radius: 10px;
+.donate-label {
+  font-size: 1.2em;
+  color: #00A1D6;
   text-align: center;
-  max-width: 320px;
-  margin: 20px auto;
-  border: 1px solid #00A1D6;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 0 10px rgba(0, 161, 214, 0.2);
-  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: bold;
+  text-shadow: 0 0 2px rgba(0, 161, 214, 0.5);
+  display: block;
 }
 
 .donation-box .crypto-container {
@@ -256,44 +340,17 @@ button:hover {
   animation: fadeTooltip 1s ease-in-out;
 }
 
-/* Stripe button styling */
-.stripe-container {
-  margin-top: 10px;
-}
-
-.stripe-button {
+/* Stripe button styling (inside payment-box) */
+.payment-box {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-  font-family: Arial, sans-serif;
-  font-size: 1.0em;
-  line-height: 1.4;
-  position: relative;
-  -webkit-tap-highlight-color: transparent;
   justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 
-.stripe-button:hover {
-  background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 0 15px rgba(0, 161, 214, 0.5);
-}
-
-.stripe-button:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 20px rgba(0, 161, 214, 0.8);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-.donation-box .crypto-name.stripe {
-  color: #635BFF;
-  font-weight: bold;
+.payment-box stripe-buy-button {
+  width: 100%;
+  max-width: 320px;
 }
 
 /* Footer styling */
@@ -372,6 +429,19 @@ footer p:hover .copyright-tooltip {
     font-size: 0.7em;
   }
   canvas {
-    max-width: 90vw; /* Ensure canvas fits within viewport width */
+    max-width: 90vw;
+  }
+  .digital-clock {
+    font-size: 1.5em;
+  }
+  .flip-container {
+    font-size: 1.5em;
+    width: 142px; /* Adjusted for mobile: 3 spans (37.5px) + 2 colons (7.5px) + 4 gaps (3.75px) = 142.5px, rounded to 142px */
+  }
+  .mirtha, .minit, .huor {
+    width: 37.5px; /* 50px * (1.5em / 2em) */
+  }
+  .colon {
+    width: 7.5px; /* 10px * (1.5em / 2em) */
   }
 }

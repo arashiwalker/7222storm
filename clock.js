@@ -147,7 +147,7 @@ toggleSoundBtn.addEventListener('click', () => {
 
 let clockRadius, centerX, centerY;
 function resizeCanvas() {
-    canvas.width = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9);
+    canvas.width = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9, 500);
     canvas.height = canvas.width;
     centerX = canvas.width / 2;
     centerY = canvas.height / 2;
@@ -301,6 +301,43 @@ function drawLabel(label, x, y, color) {
     ctx.fillText(label, x, y);
 }
 
+function updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, isHarmonyMode) {
+    const mirthaEl = document.getElementById('mirtha');
+    const minitEl = document.getElementById('minit');
+    const huorEl = document.getElementById('huor');
+
+    const mirthaLabel = getLabel(mirthaTick, totalMirthas).toString().padStart(2, '0');
+    const minitLabel = getLabel(minitTick, totalMinits).toString().padStart(2, '0');
+    const huorLabel = getLabel(huorTick, totalHuors).toString().padStart(2, '0');
+
+    if (mirthaEl.textContent !== mirthaLabel) {
+        mirthaEl.textContent = mirthaLabel;
+        mirthaEl.classList.add('flip');
+        setTimeout(() => mirthaEl.classList.remove('flip'), 300);
+    }
+    if (minitEl.textContent !== minitLabel) {
+        minitEl.textContent = minitLabel;
+        minitEl.classList.add('flip');
+        setTimeout(() => minitEl.classList.remove('flip'), 300);
+    }
+    if (huorEl.textContent !== huorLabel) {
+        huorEl.textContent = huorLabel;
+        huorEl.classList.add('flip');
+        setTimeout(() => huorEl.classList.remove('flip'), 300);
+    }
+
+    if (mirthaChanged) {
+        mirthaEl.classList.add('glow-mirtha');
+        setTimeout(() => mirthaEl.classList.remove('glow-mirtha'), 300);
+    }
+    if (isHarmonyMode) {
+        [mirthaEl, minitEl, huorEl].forEach(el => {
+            el.classList.add('glow-harmony');
+            setTimeout(() => el.classList.remove('glow-harmony'), 300);
+        });
+    }
+}
+
 function drawClockHands() {
     console.log('MirthaNode: Drawing clock hands');
     const now = Date.now();
@@ -396,6 +433,8 @@ function drawClockHands() {
     const mirthaTextX = mirtha.xEnd + 15 * Math.cos((mirthaRotation - 90) * (Math.PI / 180));
     const mirthaTextY = mirtha.yEnd + 15 * Math.sin((mirthaRotation - 90) * (Math.PI / 180));
     drawLabel(mirthaLabel, mirthaTextX, mirthaTextY, '#00FF00');
+
+    updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, isHarmonyMode);
 }
 
 function drawClock() {
