@@ -54,7 +54,6 @@ body, html {
 canvas {
   border: 5px solid #00A1D6;
   border-radius: 50%;
-  background-color: #282828;
   width: 100%;
   max-width: 500px;
   height: auto;
@@ -66,7 +65,7 @@ canvas {
 .digital-clock {
   margin: 40px auto 20px auto;
   padding: 15px;
-  background: #282828;
+  background: rgba(0, 0, 0, 0.6); /* Changed from #282828 to match info and donation sections */
   border: 5px solid #00A1D6;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 161, 214, 0.5);
@@ -80,9 +79,9 @@ canvas {
 
 .flip-container {
   font-family: 'Inconsolata', monospace;
-  font-size: 2em;
+  font-size: 2.2em;
   display: flex;
-  width: 190px; /* 3 spans (50px) + 2 colons (10px) + 4 gaps (5px) = 190px */
+  width: 210px;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -92,7 +91,7 @@ canvas {
 
 .mirtha, .minit, .huor {
   display: inline-block;
-  width: 50px;
+  width: 55px;
   text-align: center;
   position: relative;
   transition: text-shadow 0.3s ease;
@@ -100,9 +99,9 @@ canvas {
 
 .colon {
   display: inline-block;
-  width: 10px;
+  width: 12px;
   text-align: center;
-  color: #00A1D6; /* Botswana blue */
+  color: #00A1D6;
 }
 
 .mirtha {
@@ -378,7 +377,7 @@ footer p:hover .copyright-tooltip {
 
 .copyright-tooltip {
   visibility: hidden;
-  background: rgba(0, 161, 214, 0.8);
+  background: rgba(0, 0, 0, 0.8);
   color: #fff;
   text-align: center;
   padding: 5px 10px;
@@ -435,13 +434,13 @@ footer p:hover .copyright-tooltip {
     font-size: 1.5em;
   }
   .flip-container {
-    font-size: 1.5em;
-    width: 142px; /* Adjusted for mobile: 3 spans (37.5px) + 2 colons (7.5px) + 4 gaps (3.75px) = 142.5px, rounded to 142px */
+    font-size: 1.7em;
+    width: 160px;
   }
   .mirtha, .minit, .huor {
-    width: 37.5px; /* 50px * (1.5em / 2em) */
+    width: 41.25px;
   }
   .colon {
-    width: 7.5px; /* 10px * (1.5em / 2em) */
+    width: 9px;
   }
 }

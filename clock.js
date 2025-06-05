@@ -190,8 +190,8 @@ function getLabel(currentTick, totalTicks) {
 function drawClockFace() {
     console.log('MirthaNode: Drawing clock face');
     const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, clockRadius);
-    gradient.addColorStop(0, '#333');
-    gradient.addColorStop(1, '#181818');
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.6)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.6)');
     ctx.beginPath();
     ctx.arc(centerX, centerY, clockRadius, 0, 2 * Math.PI);
     ctx.fillStyle = gradient;
@@ -301,7 +301,7 @@ function drawLabel(label, x, y, color) {
     ctx.fillText(label, x, y);
 }
 
-function updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, isHarmonyMode) {
+function updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, minitChanged, huorChanged, isHarmonyMode) {
     const mirthaEl = document.getElementById('mirtha');
     const minitEl = document.getElementById('minit');
     const huorEl = document.getElementById('huor');
@@ -329,6 +329,14 @@ function updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, isHa
     if (mirthaChanged) {
         mirthaEl.classList.add('glow-mirtha');
         setTimeout(() => mirthaEl.classList.remove('glow-mirtha'), 300);
+    }
+    if (minitChanged) {
+        minitEl.classList.add('glow-mirtha'); // Using glow-mirtha class for consistency
+        setTimeout(() => minitEl.classList.remove('glow-mirtha'), 300);
+    }
+    if (huorChanged) {
+        huorEl.classList.add('glow-mirtha'); // Using glow-mirtha class for consistency
+        setTimeout(() => huorEl.classList.remove('glow-mirtha'), 300);
     }
     if (isHarmonyMode) {
         [mirthaEl, minitEl, huorEl].forEach(el => {
@@ -434,7 +442,7 @@ function drawClockHands() {
     const mirthaTextY = mirtha.yEnd + 15 * Math.sin((mirthaRotation - 90) * (Math.PI / 180));
     drawLabel(mirthaLabel, mirthaTextX, mirthaTextY, '#00FF00');
 
-    updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, isHarmonyMode);
+    updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, minitChanged, huorChanged, isHarmonyMode);
 }
 
 function drawClock() {
