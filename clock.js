@@ -183,6 +183,10 @@ let mirthaGlowOpacity = 0;
 let minitGlowOpacity = 0;
 let huorGlowOpacity = 0;
 
+let mirthaDigitalGlowOpacity = 0;
+let minitDigitalGlowOpacity = 0;
+let huorDigitalGlowOpacity = 0;
+
 function getLabel(currentTick, totalTicks) {
     return (currentTick + totalTicks - 2) % totalTicks + 1;
 }
@@ -301,10 +305,16 @@ function drawLabel(label, x, y, color) {
     ctx.fillText(label, x, y);
 }
 
-function updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, minitChanged, huorChanged, isHarmonyMode) {
+function updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, minitChanged, huorChanged, isHarmonyMode, elapsedTime) {
     const mirthaEl = document.getElementById('mirtha');
     const minitEl = document.getElementById('minit');
     const huorEl = document.getElementById('huor');
+
+    // Ensure elements exist to prevent null reference errors
+    if (!mirthaEl || !minitEl || !huorEl) {
+        console.error('MirthaNode: Digital clock elements not found');
+        return;
+    }
 
     const mirthaLabel = getLabel(mirthaTick, totalMirthas).toString().padStart(2, '0');
     const minitLabel = getLabel(minitTick, totalMinits).toString().padStart(2, '0');
@@ -313,35 +323,45 @@ function updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, mini
     if (mirthaEl.textContent !== mirthaLabel) {
         mirthaEl.textContent = mirthaLabel;
         mirthaEl.classList.add('flip');
-        setTimeout(() => mirthaEl.classList.remove('flip'), 300);
+        mirthaDigitalGlowOpacity = 1; // Reset glow on change
     }
     if (minitEl.textContent !== minitLabel) {
         minitEl.textContent = minitLabel;
         minitEl.classList.add('flip');
-        setTimeout(() => minitEl.classList.remove('flip'), 300);
+        minitDigitalGlowOpacity = 1; // Reset glow on change
     }
     if (huorEl.textContent !== huorLabel) {
         huorEl.textContent = huorLabel;
         huorEl.classList.add('flip');
-        setTimeout(() => huorEl.classList.remove('flip'), 300);
+        huorDigitalGlowOpacity = 1; // Reset glow on change
     }
 
+    // Calculate glow decay similar to analog
+    const glowStep = (elapsedTime % secondsInterval) / secondsInterval;
     if (mirthaChanged) {
-        mirthaEl.classList.add('glow-mirtha');
-        setTimeout(() => mirthaEl.classList.remove('glow-mirtha'), 300);
+        mirthaDigitalGlowOpacity = 1;
+    } else {
+        mirthaDigitalGlowOpacity = Math.max(0, mirthaDigitalGlowOpacity - glowStep);
     }
     if (minitChanged) {
-        minitEl.classList.add('glow-mirtha'); // Using glow-mirtha class for consistency
-        setTimeout(() => minitEl.classList.remove('glow-mirtha'), 300);
+        minitDigitalGlowOpacity = 1;
+    } else {
+        minitDigitalGlowOpacity = Math.max(0, minitDigitalGlowOpacity - (1 / (secondsInterval / 16.666)));
     }
     if (huorChanged) {
-        huorEl.classList.add('glow-mirtha'); // Using glow-mirtha class for consistency
-        setTimeout(() => huorEl.classList.remove('glow-mirtha'), 300);
+        huorDigitalGlowOpacity = 1;
+    } else {
+        huorDigitalGlowOpacity = Math.max(0, huorDigitalGlowOpacity - (1 / (secondsInterval / 16.666)));
     }
+
+    // Apply glow dynamically
+    mirthaEl.style.textShadow = mirthaDigitalGlowOpacity > 0 ? `0 0 10px #00FF00, 0 0 ${20 * mirthaDigitalGlowOpacity}px #00FF00` : 'none';
+    minitEl.style.textShadow = minitDigitalGlowOpacity > 0 ? `0 0 10px #800080, 0 0 ${20 * minitDigitalGlowOpacity}px #800080` : 'none';
+    huorEl.style.textShadow = huorDigitalGlowOpacity > 0 ? `0 0 10px #FF0000, 0 0 ${20 * huorDigitalGlowOpacity}px #FF0000` : 'none';
+
     if (isHarmonyMode) {
         [mirthaEl, minitEl, huorEl].forEach(el => {
             el.classList.add('glow-harmony');
-            setTimeout(() => el.classList.remove('glow-harmony'), 300);
         });
     }
 }
@@ -442,7 +462,7 @@ function drawClockHands() {
     const mirthaTextY = mirtha.yEnd + 15 * Math.sin((mirthaRotation - 90) * (Math.PI / 180));
     drawLabel(mirthaLabel, mirthaTextX, mirthaTextY, '#00FF00');
 
-    updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, minitChanged, huorChanged, isHarmonyMode);
+    updateDigitalClock(mirthaTick, minitTick, huorTick, mirthaChanged, minitChanged, huorChanged, isHarmonyMode, elapsedTime);
 }
 
 function drawClock() {
